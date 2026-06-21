@@ -10,7 +10,7 @@ import time
 import numpy as np
 import websockets
 
-from config    import STIM_LABEL, STIM_FREQ, RECORD_SEC, WINDOW_SEC
+from config    import STIM_LABEL, STIM_FREQ, RECORD_SEC, WINDOW_SEC, WINDOW
 from eegsource import CytonEEG
 from recorder  import EEGRecorder
 
