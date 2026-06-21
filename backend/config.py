@@ -34,6 +34,6 @@ STIM_FREQ  = 15
 """
 
 # --- Grabación automática ---
-RECORD_SEC = 80
+RECORD_SEC = 40
 #RECORD_SEC = 40            # Duración fija; el servidor para y guarda solo, sin
                             # necesidad de pulsar un botón de "detener".
