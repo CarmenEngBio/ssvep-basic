@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI — Test Celda Única</title>
+  <link rel="stylesheet" href="./assets/css/styles.css"/>
+</head>
+<body>
+
+  <h1>SSVEP BCI — Fase de Testeo</h1>
+
+  <div id="status">● Conectando con el servidor...</div>
+
+  <p id="instructions">La celda parpadeará en blanco y negro. El número "1" permanece fijo — enfoca la vista en el centro durante toda la prueba (40 s).</p>
+
+  <div id="stim-wrap">
+    <div class="key" data-key="1" data-freq="8.57">1</div>
+  </div>
+
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Iniciar prueba (40 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/websocket.js"></script>
+  <script src="./assets/js/flicker.js"></script>
+  <script src="./assets/js/app.js"></script>
+
+</body>
+</html>
