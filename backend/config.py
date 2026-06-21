@@ -22,16 +22,14 @@ WINDOW     = FS * WINDOW_SEC
 #STIM_LABEL = "1"
 #STIM_FREQ  = 8.57         # Hz
 
-STIM_LABEL = "2"
-STIM_FREQ  = 10
+#STIM_LABEL = "2"
+#STIM_FREQ  = 10
 
-"""
 STIM_LABEL = "3"
 STIM_FREQ  = 12
 
-STIM_LABEL = "4"
-STIM_FREQ  = 15
-"""
+#STIM_LABEL = "4"
+#STIM_FREQ  = 15
 
 # --- Grabación automática ---
 RECORD_SEC = 40
