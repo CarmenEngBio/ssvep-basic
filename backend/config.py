@@ -19,13 +19,13 @@ WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
 
 # --- Estímulo único ---
-STIM_LABEL = "1"
-STIM_FREQ  = 8.57         # Hz
+#STIM_LABEL = "1"
+#STIM_FREQ  = 8.57         # Hz
 
-"""
 STIM_LABEL = "2"
 STIM_FREQ  = 10
 
+"""
 STIM_LABEL = "3"
 STIM_FREQ  = 12
 
