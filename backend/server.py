@@ -15,7 +15,7 @@ from eegsource import CytonEEG
 from recorder  import EEGRecorder
 
 recorder  = EEGRecorder()
-LOOP_STEP = int(0.5 * 250)   # ~125 muestras nuevas por iteración (mismo criterio que el proyecto principal)
+LOOP_STEP = int(0.5 * WINDOW) 
 
 
 async def auto_stop(ws, duration: float):
