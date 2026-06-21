@@ -15,7 +15,7 @@ N_CHANNELS = 8             # Fp1 Fp2 C3 C4 P7 P8 O1 O2
 # Mismo criterio que el proyecto principal: el buffer de BrainFlow tarda en
 # llenarse, por lo que se espera WINDOW_SEC segundos antes de aceptar
 # conexiones, evitando ventanas con zero-padding al arrancar.
-WINDOW_SEC = 8
+WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
 
 # --- Estímulo único ---
