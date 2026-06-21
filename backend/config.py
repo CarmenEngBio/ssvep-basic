@@ -22,6 +22,18 @@ WINDOW     = FS * WINDOW_SEC
 STIM_LABEL = "1"
 STIM_FREQ  = 8.57         # Hz
 
+"""
+STIM_LABEL = "2"
+STIM_FREQ  = 10
+
+STIM_LABEL = "3"
+STIM_FREQ  = 12
+
+STIM_LABEL = "4"
+STIM_FREQ  = 15
+"""
+
 # --- Grabación automática ---
-RECORD_SEC = 40            # Duración fija; el servidor para y guarda solo, sin
+RECORD_SEC = 160
+#RECORD_SEC = 40            # Duración fija; el servidor para y guarda solo, sin
                             # necesidad de pulsar un botón de "detener".
