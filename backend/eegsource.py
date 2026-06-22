@@ -4,7 +4,7 @@
 # señal real, así que se elimina la rama simulada y el build_source().
 
 import numpy as np
-# from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
+from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
 
 from config import SERIAL_PORT, N_CHANNELS, WINDOW
 
