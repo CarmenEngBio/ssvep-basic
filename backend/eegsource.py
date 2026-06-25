@@ -42,7 +42,6 @@ class CytonEEG:
         — get_window() sigue siendo la vista rodante para todo lo demás.
         """
 
-    """
     def get_new_samples(self):
        
         data = self.board.get_board_data()  # sin argumento = todo lo nuevo
@@ -52,7 +51,7 @@ class CytonEEG:
         eeg = np.array([data[ch] for ch in self.eeg_chs])
         ts_ch = BoardShim.get_timestamp_channel(BoardIds.CYTON_BOARD.value)
         return eeg, data[ts_ch]
-    """
+    
 
     def stop(self) -> None:
         self.board.stop_stream()

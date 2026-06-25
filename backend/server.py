@@ -15,7 +15,7 @@ from eegsource import CytonEEG
 from recorder  import EEGRecorder
 
 recorder  = EEGRecorder()
-LOOP_STEP = int(0.5 * WINDOW) 
+#LOOP_STEP = int(0.5 * WINDOW) 
 
 
 async def auto_stop(ws, duration: float):
@@ -58,10 +58,9 @@ async def handler(ws, source):
             raw_eeg = source.get_window()
 
             if recorder.is_recording:
-                t_now    = time.time()
-                chunk    = raw_eeg[:, -LOOP_STEP:]
-                ts_chunk = np.linspace(t_now - 0.5, t_now, LOOP_STEP, endpoint=False)
-                recorder.write_chunk(chunk, ts_chunk)
+                new_eeg, new_ts = source.get_new_samples()
+                if new_eeg.shape[1] > 0:
+                    recorder.write_chunk(new_eeg, new_ts)
 
             #   Calidad de señal — P7, P8, O1, O2 (mismos 4 canales del protocolo del tutor)
             occ_var = float(np.mean(np.var(raw_eeg[4:8], axis=1)))
