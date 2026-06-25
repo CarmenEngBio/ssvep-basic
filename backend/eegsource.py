@@ -16,8 +16,8 @@ class CytonEEG:
         params             = BrainFlowInputParams()
         params.serial_port = SERIAL_PORT
 
-        # self.board   = BoardShim(BoardIds.CYTON_BOARD.value, params)
-        self.board = BoardShim(BoardIds.SYNTHETIC_BOARD.value, params)
+        self.board   = BoardShim(BoardIds.CYTON_BOARD.value, params)
+        #self.board = BoardShim(BoardIds.SYNTHETIC_BOARD.value, params)
         all_eeg      = BoardShim.get_eeg_channels(BoardIds.CYTON_BOARD.value)
         self.eeg_chs = all_eeg[:N_CHANNELS]
 
