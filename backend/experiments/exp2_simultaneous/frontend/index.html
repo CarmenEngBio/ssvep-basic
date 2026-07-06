@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI — Experimento 2: Parpadeo simultáneo</title>
+  <link rel="stylesheet" href="./assets/css/styles.css"/>
+</head>
+<body>
+
+  <h1>Experimento 2 — Parpadeo simultáneo</h1>
+
+  <div id="status">● Conectando con el servidor...</div>
+
+  <p id="instructions">Las 4 celdas parpadean todo el rato. Usa tu alarma del
+  móvil para mirar la celda 1 los primeros 40 s, la 2 los siguientes 40 s, y
+  así con la 3 y la 4. La etiqueta de abajo es solo un apoyo/cruce con tu
+  temporizador — no cambia el estímulo.</p>
+
+  <div id="keypad">
+    <div class="key" data-key="1" data-freq="8.57">1<small>8.57 Hz</small></div>
+    <div class="key" data-key="2" data-freq="10">2<small>10 Hz</small></div>
+    <div class="key" data-key="3" data-freq="12">3<small>12 Hz</small></div>
+    <div class="key" data-key="4" data-freq="15">4<small>15 Hz</small></div>
+  </div>
+
+  <div id="phase-label">—</div>
+
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Iniciar experimento (160 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/websocket.js"></script>
+  <script src="./assets/js/flicker.js"></script>
+  <script src="./assets/js/app.js"></script>
+
+</body>
+</html>

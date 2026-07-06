@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI — Experimento 1: Parpadeo secuencial</title>
+  <link rel="stylesheet" href="./assets/css/styles.css"/>
+</head>
+<body>
+
+  <h1>Experimento 1 — Parpadeo secuencial</h1>
+
+  <div id="status">● Conectando con el servidor...</div>
+
+  <div id="keypad">
+    <div class="key off" data-key="1" data-freq="8.57">1<small>8.57 Hz</small></div>
+    <div class="key off" data-key="2" data-freq="10">2<small>10 Hz</small></div>
+    <div class="key off" data-key="3" data-freq="12">3<small>12 Hz</small></div>
+    <div class="key off" data-key="4" data-freq="15">4<small>15 Hz</small></div>
+  </div>
+
+  <div id="phase-label">—</div>
+
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Iniciar experimento (160 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/websocket.js"></script>
+  <script src="./assets/js/flicker.js"></script>
+  <script src="./assets/js/app.js"></script>
+
+</body>
+</html>
