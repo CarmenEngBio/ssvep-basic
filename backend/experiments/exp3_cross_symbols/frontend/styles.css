@@ -18,45 +18,165 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 #status { font-size: .8rem; color: #888; transition: color .3s; }
 #status.ok { color: #6abf69; }
 
-#instructions {
-  font-size: .8rem;
-  color: #666;
-  text-align: center;
-  max-width: 420px;
-  line-height: 1.5;
-}
 
-#keypad {
-  display: flex;
-  gap: 2.5cm;
-}
+#symbol-grid {
+      position: relative;
+      width: 500px;
+      height: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(20, 20, 20, 0.5);
+      border: 1px solid #222;
+      border-radius: 20px;
+      padding: 20px;
+    }
 
-/* Celda completa — igual que en ssvep-basic: flicker de campo entero para
-   maximizar la amplitud SSVEP. Aquí las 4 parpadean siempre, sin estado
-   activo/inactivo (a diferencia del Experimento 1). */
-.key {
-  width: 5cm;
-  height: 5cm;
-  border-radius: 8px;
+.symbol-cell {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  background: #1a1a1a;
+  border: 2px solid #333;
+  border-radius: 12px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
-  font-weight: 700;
-  color: #000;
+  cursor: pointer;
   user-select: none;
+  transition: all 0.3s ease;
 }
 
-.key small {
-  font-size: .6rem;
-  font-weight: 400;
+/* PREDICCIÓN (borde verde cuando se predice) */
+.symbol-cell.predicted {
+  border-color: #6abf69 !important;
+  border-width: 3px !important;
+  box-shadow: 0 0 12px rgba(106, 191, 105, 0.5), inset 0 0 8px rgba(106, 191, 105, 0.1);
+  background: #1a1f1a;
+}
+
+/* ─────────────────────────────────────────────────────────────────── */
+/*  CONTROL PANEL                                                       */
+/* ─────────────────────────────────────────────────────────────────── */
+
+#control-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 320px;
+  padding: 1rem;
+  background: #151515;
+  border: 1px solid #2a2a2a;
+  border-radius: 8px;
+}
+
+.control-section {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.control-label {
+  font-size: 0.75rem;
+  color: #666;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* Frecuencias control */
+#freq-controls {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+}
+
+.freq-btn {
+  padding: 0.6rem;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  border-radius: 6px;
+  color: #ccc;
+  font-size: 0.75rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  text-align: center;
+}
+
+.freq-btn:hover {
+  background: #333;
+  border-color: #555;
+}
+
+.freq-btn.active {
+  background: #1e281e;
+  border-color: #4a7a49;
+  color: #6abf69;
+  box-shadow: 0 0 6px rgba(106, 191, 105, 0.3);
+}
+
+/* Posiciones en cruz (arriba, derecha, abajo, izquierda) */
+.symbol-cell[data-pos="top"] {
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.symbol-cell[data-pos="right"] {
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+}
+
+.symbol-cell[data-pos="bottom"] {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.symbol-cell[data-pos="left"] {
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+}
+
+/* SÍMBOLO (parpadea) */
+.symbol-cell .emoji {
+  font-size: 4.5rem;
+  line-height: 1;
+  transition: opacity 0.05s ease;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.symbol-cell.on .emoji {
+  opacity: 1;           /* Visible */
+  color: #fff;
+}
+
+.symbol-cell.off .emoji {
+  opacity: 0.15;        /* Muy atenuado */
+  color: #666;
+}
+
+/* ETIQUETA (no parpadea) */
+.symbol-cell .label {
+  font-size: 0.85rem;
+  color: #888;
+  margin-top: 0.5rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.symbol-cell .freq-label {
+  font-size: 0.7rem;
   color: #555;
-  margin-top: 4px;
+  margin-top: 0.3rem;
+  font-weight: 300;
 }
-
-.key.on  { background: #ffffff; }
-.key.off { background: #000000; }
 
 #phase-label { font-size: .85rem; color: #6abf69; min-height: 1.2em; }
 
