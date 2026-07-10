@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SSVEP BCI — Experiment 3: Cross Symbols</title>
+  <link rel="stylesheet" href="./assets/css/symbol-styles.css">
+</head>
+<body>
+
+  <!-- MODAL: Instrucciones iniciales -->
+  <div id="modal-overlay">
+    <div id="modal">
+      <h2>📖 Instrucciones — Experimento 3</h2>
+      <ol>
+        <li>Siéntate cómodamente a <strong>40 cm</strong> de distancia de la pantalla.</li>
+        <li>Cada símbolo parpadea a una frecuencia diferente <strong>(8.57–15 Hz)</strong>.</li>
+        <li><strong>Fija tu mirada</strong> en el símbolo que deseas.</li>
+        <li>Cuando se resalte con borde verde, la selección se ha registrado.</li>
+        <li>Si experimentas mareo o incomodidad, <strong>cierra los ojos</strong> y descansa.</li>
+      </ol>
+      <div class="modal-note">
+        <strong>⚠️ Advertencia:</strong> Algunos individuos pueden experimentar epilepsia 
+        fotosensible con estímulos visuales parpadeantes. Si tienes antecedentes, consulta con un médico.
+      </div>
+      <button id="modal-close-btn" onclick="closeModal()">
+        ¡Entendido! — Comenzar
+      </button>
+    </div>
+  </div>
+
+  <!-- TÍTULO -->
+  <h1>🧠 SSVEP BCI — Experimento 3: Cruz de Símbolos</h1>
+
+  <!-- GRID DE 4 SÍMBOLOS EN CRUZ -->
+  <div id="symbol-grid">
+    <!-- Arriba: Frío -->
+    <div class="symbol-cell" data-pos="top" data-symbol-id="1" data-freq="8.57">
+      <div class="emoji">❄️</div>
+      <div class="label">Frío</div>
+      <div class="freq-label">8.57 Hz</div>
+    </div>
+
+    <!-- Derecha: Calor -->
+    <div class="symbol-cell" data-pos="right" data-symbol-id="2" data-freq="10.0">
+      <div class="emoji">🔥</div>
+      <div class="label">Calor</div>
+      <div class="freq-label">10.0 Hz</div>
+    </div>
+
+    <!-- Abajo: Cansancio -->
+    <div class="symbol-cell" data-pos="bottom" data-symbol-id="3" data-freq="12.0">
+      <div class="emoji">😴</div>
+      <div class="label">Cansado</div>
+      <div class="freq-label">12.0 Hz</div>
+    </div>
+
+    <!-- Izquierda: Dolor -->
+    <div class="symbol-cell" data-pos="left" data-symbol-id="4" data-freq="15.0">
+      <div class="emoji">💢</div>
+      <div class="label">Dolor</div>
+      <div class="freq-label">15.0 Hz</div>
+    </div>
+  </div>
+
+  <!-- CONTROL PANEL -->
+  <div id="control-panel">
+    <!-- Estado -->
+    <div class="control-section">
+      <div id="status-info" class="disconnected">
+        <div class="status-line">
+          <span><span class="status-dot"></span> Estado</span>
+          <span id="status-text">Inicializando...</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Última predicción -->
+    <div id="last-prediction">
+      <div style="margin-bottom: 0.5rem;">
+        <span id="pred-emoji" style="font-size: 2rem;"></span>
+      </div>
+      <div style="color: #6abf69; font-weight: 600;" id="pred-label"></div>
+      <div style="color: #666; font-size: 0.7rem; margin-top: 0.3rem;" id="pred-time"></div>
+    </div>
+
+    <!-- Toggle flicker -->
+    <div class="control-section">
+      <button id="toggle-flicker" onclick="toggleFlicker()" 
+              style="padding: 0.6rem; background: #2a2a2a; border: 1px solid #3a3a3a; 
+                     border-radius: 6px; color: #ccc; cursor: pointer; font-size: 0.85rem;
+                     font-weight: 500; transition: all 0.2s; width: 100%;">
+        ▶️ Iniciar Parpadeo
+      </button>
+    </div>
+
+    <!-- Recording panel -->
+    <div class="control-section">
+      <div class="control-label">📹 Grabación</div>
+      <div id="rec-indicator">
+        <span id="rec-status">Sin grabar</span>
+      </div>
+      <div id="rec-buttons" style="display: flex; gap: 0.6rem; margin-top: 0.6rem;">
+        <button id="rec-start-btn" onclick="startRecording()" 
+                style="flex: 1; padding: 0.5rem; background: #2a2a2a; border: 1px solid #3a3a3a; 
+                       border-radius: 6px; color: #ccc; font-size: 0.75rem; cursor: pointer;">
+          ⏺ Grabar
+        </button>
+        <button id="rec-stop-btn" onclick="stopRecording()" disabled
+                style="flex: 1; padding: 0.5rem; background: #2a2a2a; border: 1px solid #3a3a3a; 
+                       border-radius: 6px; color: #ccc; font-size: 0.75rem; cursor: pointer;">
+          ⏹ Detener
+        </button>
+      </div>
+      <div id="rec-filename" style="font-size: 0.65rem; color: #444; margin-top: 0.4rem;"></div>
+    </div>
+  </div>
+
+  <!-- DEBUG INFO -->
+  <div id="debug-panel">
+    <div style="margin-bottom: 0.4rem; color: #999; font-weight: bold;">DEBUG</div>
+    <div id="debug-content"></div>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script src="./assets/js/symbol-flicker.js"></script>
+  <script src="./assets/js/symbol-ui.js"></script>
+  <script src="./assets/js/symbol-websocket.js"></script>
+  <script src="./assets/js/symbol-app.js"></script>
+
+</body>
+</html>
