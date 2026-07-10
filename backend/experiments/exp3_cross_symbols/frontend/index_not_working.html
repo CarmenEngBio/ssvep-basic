@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI — Experiment 3: Cross Symbols</title>
+  <link rel="stylesheet" href="./assets/css/symbol-styles.css">
+</head>
+<body>
+
+  <h1>SSVEP BCI — Experimento 3: Cruz de Símbolos</h1>
+
+  <div id="status">● Conectando con el servidor...</div>
+
+  <div id="keypad">
+    <div class="key" data-key="1" data-freq="8.57">❄️<small>8.57 Hz</small></div>
+    <div class="key" data-key="2" data-freq="10">🔥<small>10 Hz</small></div>
+    <div class="key" data-key="3" data-freq="12">😴<small>12 Hz</small></div>
+    <div class="key" data-key="4" data-freq="15">💢<small>15 Hz</small></div>
+  </div>
+
+  <div id="phase-label">—</div>
+
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Iniciar experimento (160 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <!-- SCRIPTS -->
+  <script src="./assets/js/symbol-flicker.js"></script>
+  <script src="./assets/js/symbol-ui.js"></script>
+  <script src="./assets/js/symbol-websocket.js"></script>
+  <script src="./assets/js/symbol-app.js"></script>
+
+</body>
+</html>
