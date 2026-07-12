@@ -14,7 +14,7 @@ var countdownInterval = null;
 function startCountdown(seconds) {
   var timer = document.getElementById('timer');
   var remaining = seconds;
-  timer.textContent = 'Grabando... ' + remaining + ' s restantes';
+  //timer.textContent = 'Grabando... ' + remaining + ' s restantes';
 
   if (countdownInterval) clearInterval(countdownInterval);
   countdownInterval = setInterval(function() {
@@ -23,7 +23,7 @@ function startCountdown(seconds) {
       clearInterval(countdownInterval);
       timer.textContent = 'Finalizando grabación...';
     } else {
-      timer.textContent = 'Grabando... ' + remaining + ' s restantes';
+      //timer.textContent = 'Grabando... ' + remaining + ' s restantes';
     }
   }, 1000);
 }
