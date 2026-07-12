@@ -6,7 +6,7 @@
 import numpy as np
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
 
-from config import SERIAL_PORT, N_CHANNELS, WINDOW
+from exp3_config import SERIAL_PORT, N_CHANNELS, WINDOW
 
 
 class CytonEEG:
