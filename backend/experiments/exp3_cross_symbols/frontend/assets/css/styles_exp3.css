@@ -114,8 +114,8 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 #test-panel{
     position: absolute;
     left: 50%;
-    top: 60%;
-    transform: translate(-50%, -10%);
+    top: 70%;
+    transform: translate(-50%, 10%);
 }
 
 #test-panel button {
