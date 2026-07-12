@@ -29,8 +29,8 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 /* === CRUZ DE 4 CELDAS === */
 #stim-wrap {
   display: grid;
-  grid-template-columns: 5cm 5cm 5cm;
-  grid-template-rows: 5cm 5cm 5cm;
+  grid-template-columns: 7cm 7cm 7cm;
+  grid-template-rows: 7cm 7cm 7cm;
   gap: 1.5cm;
   align-items: center;
   justify-items: center;
