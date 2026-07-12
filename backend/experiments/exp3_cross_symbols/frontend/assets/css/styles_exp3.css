@@ -48,6 +48,7 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 }
 
 #fixation {
+  /*
   grid-column: 2;
   grid-row: 2;
   width: 8mm;
@@ -55,6 +56,22 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
   border-radius: 50%;
   background: #555;
   border: 1px solid #777;
+  */
+
+  grid-column: 2;
+  grid-row: 2;
+
+  width: auto;
+  height: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  background: transparent;
+  border: none;
+
+  
 }
 
 #key-right {
@@ -100,6 +117,7 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 .key.off { background: #000000; }
 
 /* === PANEL DE CONTROL === */
+/*
 #test-panel {
   display: flex;
   flex-direction: column;
@@ -128,6 +146,29 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
 #test-panel button:disabled { 
   opacity: .3; 
   cursor: default; 
+}
+*/
+
+#btn-test {
+  background: #2e2e2e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #ccc;
+  padding: .6rem 1.2rem;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+  font-weight: 600;
+}
+
+#btn-test:hover:not(:disabled) {
+  background: #383838;
+  border-color: #666;
+}
+
+#btn-test:disabled {
+  opacity: .3;
+  cursor: default;
 }
 
 #timer { 
