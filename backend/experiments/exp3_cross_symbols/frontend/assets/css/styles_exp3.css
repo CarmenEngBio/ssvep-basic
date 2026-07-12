@@ -104,8 +104,8 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: .6rem;
-  margin-top: -1.5 rem;
+  gap: .4rem;
+  margin-top: -3.5 rem;
 }
 
 #test-panel button {
