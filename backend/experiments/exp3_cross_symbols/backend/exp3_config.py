@@ -30,4 +30,4 @@ STIM_MATRIX = [
 ]
 
 # --- Grabación automática ---
-RECORD_SEC = 160           # Duración del experimento en segundos
+RECORD_SEC = 160          # Duración del experimento en segundos

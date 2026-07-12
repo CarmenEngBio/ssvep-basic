@@ -10,8 +10,8 @@ import numpy as np
 import websockets
 
 from exp3_config import STIM_MATRIX, RECORD_SEC, WINDOW_SEC, WINDOW
-from exp3_eegsource   import CytonEEG
-from exp3_recorder    import EEGRecorder
+from exp3_eegsource import CytonEEG
+from exp3_recorder import EEGRecorder
 
 recorder = EEGRecorder()
 
