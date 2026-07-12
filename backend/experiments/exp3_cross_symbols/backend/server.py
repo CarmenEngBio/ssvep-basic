@@ -14,7 +14,7 @@ import websockets
 # Añadir el directorio backend al path para importar eegsource y recorder
 sys.path.insert(0, os.path.join(os.path.dirname(__file__), '..', '..'))
 
-from exp3_config import STIM_MATRIX, RECORD_SEC, WINDOW_SEC, WINDOW
+from config import STIM_MATRIX, RECORD_SEC, WINDOW_SEC, WINDOW
 from eegsource   import CytonEEG
 from recorder    import EEGRecorder
 
