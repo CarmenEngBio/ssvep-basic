@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI — Experimento 3: 4 Celdas en Cruz</title>
+  <link rel="stylesheet" href="./assets/css/styles_exp3.css"/>
+</head>
+<body>
+
+  <h1>SSVEP BCI — Experimento 3: 4 Celdas en Cruz</h1>
+
+  <div id="status">● Conectando con el servidor...</div>
+
+  <p id="instructions">
+    Enfoca la vista en el centro (punto de fijación). Las 4 celdas parpadearán 
+    simultáneamente a diferentes frecuencias. Mantén la atención relajada durante 
+    toda la prueba.
+  </p>
+
+  <!-- Cruz de 4 celdas con emojis -->
+  <div id="stim-wrap">
+    <!-- Celda superior (Frío) -->
+    <div class="key" id="key-top" data-key="top" data-emoji="❄️" data-freq="10.0">
+      <div class="emoji">❄️</div>
+      <div class="label">Frío</div>
+    </div>
+
+    <!-- Contenedor central con izquierda y derecha -->
+    <div id="center-container">
+      <!-- Celda izquierda (Calor) -->
+      <div class="key" id="key-left" data-key="left" data-emoji="🔥" data-freq="8.0">
+        <div class="emoji">🔥</div>
+        <div class="label">Calor</div>
+      </div>
+
+      <!-- Punto de fijación central -->
+      <div id="fixation"></div>
+
+      <!-- Celda derecha (Dolor) -->
+      <div class="key" id="key-right" data-key="right" data-emoji="😣" data-freq="9.0">
+        <div class="emoji">😣</div>
+        <div class="label">Dolor</div>
+      </div>
+    </div>
+
+    <!-- Celda inferior (Cansado) -->
+    <div class="key" id="key-bottom" data-key="bottom" data-emoji="😴" data-freq="12.0">
+      <div class="emoji">😴</div>
+      <div class="label">Cansado</div>
+    </div>
+  </div>
+
+  <!-- Panel de control -->
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Iniciar Experimento 3 (160 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <!-- Scripts -->
+  <script src="./assets/js/ui.js"></script>
+  <script src="./assets/js/websocket.js"></script>
+  <script src="./assets/js/flicker.js"></script>
+  <script src="./assets/js/app_exp3.js"></script>
+
+</body>
+</html>
