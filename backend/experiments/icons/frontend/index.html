@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BCI Asistencial SSVEP — 4 Celdas Vitales</title>
+  <link rel="stylesheet" href="./styles.css"/>
+</head>
+<body>
+ 
+  <div class="container">
+    <header>
+      <h1>BCI Asistencial SSVEP</h1>
+      <p class="subtitle">Interfaz de comunicación por símbolos vitales</p>
+    </header>
+ 
+    <!-- Status -->
+    <div id="status" class="status">
+      ● Conectando con servidor...
+    </div>
+ 
+    <!-- Instrucciones -->
+    <div id="instructions" class="instructions">
+      <p>Mantén la vista enfocada en el <strong>punto de fijación central</strong> 
+         durante los 10 segundos de grabación. La celda vital que desees será 
+         parpadeada. La sesión finalizará automáticamente cuando se detecte tu selección.</p>
+    </div>
+ 
+    <!-- Celdas vitales en fila -->
+    <div class="stim-container">
+      <!-- Celda 1: Hambre/Sed -->
+      <div class="vital-cell" id="cell-1" data-cell="1" data-freq="8.57">
+        <div class="emoji">🍽️</div>
+        <div class="label">Comer/<br>Sed</div>
+      </div>
+ 
+      <!-- Celda 2: Frío/Calor -->
+      <div class="vital-cell" id="cell-2" data-cell="2" data-freq="10.0">
+        <div class="emoji">❄️</div>
+        <div class="label">Frío/<br>Calor</div>
+      </div>
+ 
+      <!-- Celda 3: Emergencias -->
+      <div class="vital-cell" id="cell-3" data-cell="3" data-freq="12.0">
+        <div class="emoji">🚨</div>
+        <div class="label">SOS<br>Emergencias</div>
+      </div>
+ 
+      <!-- Celda 4: Baño -->
+      <div class="vital-cell" id="cell-4" data-cell="4" data-freq="15.0">
+        <div class="emoji">🚽</div>
+        <div class="label">Baño</div>
+      </div>
+    </div>
+ 
+    <!-- Punto de fijación -->
+    <div class="fixation-point"></div>
+ 
+    <!-- Panel de control -->
+    <div class="control-panel">
+      <button id="btn-start" class="btn btn-start" onclick="startSession()">
+        Iniciar Sesión
+      </button>
+      <button id="btn-stop" class="btn btn-stop" onclick="stopSession()" disabled>
+        Detener
+      </button>
+    </div>
+ 
+    <!-- Timer y feedback -->
+    <div class="feedback-section">
+      <div id="timer" class="timer"></div>
+      <div id="selection-feedback" class="selection-feedback"></div>
+      <div id="correlation-display" class="correlation-display"></div>
+    </div>
+ 
+    <!-- Archivo grabado -->
+    <div id="rec-filename" class="rec-filename"></div>
+ 
+    <!-- Log de correlaciones -->
+    <div id="correlations-log" class="correlations-log"></div>
+  </div>
+ 
+  <script src="./websocket.js"></script>
+  <script src="./flicker.js"></script>
+  <script src="./ui.js"></script>
+  <script src="./app.js"></script>
+ 
+</body>
+</html>
