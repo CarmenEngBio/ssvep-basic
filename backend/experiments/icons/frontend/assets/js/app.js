@@ -5,3 +5,6 @@ window.addEventListener('load', function() {
   console.log('[BCI] Conectando con servidor WebSocket en ws://localhost:8765');
   console.log('[BCI] Iniciando flickering de las 4 celdas vitales');
 });
+
+initFlicker();   
+connect();
