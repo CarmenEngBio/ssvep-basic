@@ -1,21 +1,22 @@
 // bci_app.js — Inicializador principal del BCI
 
+ 
 console.log('[BCI] Cargando aplicación...');
-
-// Esperar a que DOM esté completamente cargado
+ 
+// ✓ connect() se llama SOLO en websocket.js, NO aquí
+ 
 window.addEventListener('load', function() {
   console.log('[BCI] DOM cargado, inicializando...');
   
-  // Ahora SÍ inicializar (DOM existe)
+  // Inicializar flickering
   initFlicker();
   console.log('[BCI] Flickering iniciado');
   
-  connect();
-  console.log('[BCI] Conectando con servidor WebSocket en ws://localhost:8765');
+  // ✓ NO llamar a connect() aquí - websocket.js ya lo hace
 });
-
+ 
 // ==========================================
-// FUNCIÓN: Iniciar Sesión (botón)
+// FUNCIÓN: Iniciar Sesión
 // ==========================================
 function startTest() {
   console.log('[StartTest] Sesión iniciada');
@@ -40,6 +41,33 @@ function startTest() {
   document.getElementById('btn-test').disabled = true;
   console.log('[StartTest] Botón desactivado');
 }
-
-// Hacer global
+ 
+// ==========================================
+// FUNCIÓN: Detener Sesión (NUEVO)
+// ==========================================
+function stopTest() {
+  console.log('[StopTest] Sesión detenida');
+  
+  if (!socket) {
+    alert('⚠️ No hay conexión con el servidor');
+    return;
+  }
+  
+  if (socket.readyState !== WebSocket.OPEN) {
+    alert('⚠️ Desconectado del servidor');
+    return;
+  }
+  
+  // Enviar mensaje de parada
+  socket.send(JSON.stringify({
+    type: "stop_session"
+  }));
+  
+  // Reactivar botón de inicio
+  document.getElementById('btn-test').disabled = false;
+  console.log('[StopTest] Botón reactivado');
+}
+ 
+// Hacer funciones globales
 window.startTest = startTest;
+window.stopTest = stopTest;
