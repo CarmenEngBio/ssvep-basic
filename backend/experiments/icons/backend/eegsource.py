@@ -27,7 +27,20 @@ class CytonEEG:
         self.last_window = None
 
     def get_window(self) -> np.ndarray:
-        """Obtiene ventana rodante acumulando datos nuevos."""
+    """Obtiene ventana rodante de datos."""
+    data = self.board.get_current_board_data(WINDOW)
+    eeg = np.array([data[ch] for ch in self.eeg_chs])
+    
+    if eeg.shape[1] < WINDOW:
+        pad = np.zeros((len(self.eeg_chs), WINDOW - eeg.shape[1]))
+        eeg = np.hstack([pad, eeg])
+    
+    return eeg[:, -WINDOW:]
+
+    
+    """
+    def get_window(self) -> np.ndarray:
+        #Obtiene ventana rodante acumulando datos nuevos.
         # Leer muestras nuevas
         new_eeg, _ = self.get_new_samples()
         
@@ -44,6 +57,7 @@ class CytonEEG:
         
         self.last_window = self.buffer.copy()
         return self.buffer
+    """
 
     def get_new_samples(self):
         """Lectura DESTRUCTIVA: vacía el buffer y devuelve muestras nuevas."""
