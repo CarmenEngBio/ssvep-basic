@@ -13,13 +13,13 @@ FS = 250                    # Frecuencia de muestreo (Hz)
 UNITS_ALREADY_UV = True     # Los datos ya vienen en µV
  
 # Bandpass
-BP_LO = 4.0                 # Hz (baja)
-BP_HI = 30.0                # Hz (alta)
+BP_LO = 5.0                 # Hz (baja)
+BP_HI = 25.0                # Hz (alta)
  
 # Notch Comb
 NOTCH_FUND = 50.0           # Fundamental (Hz)
 NOTCH_NH = 3               # Solo 50 Hz (no 100, 150)
-NOTCH_Q = 30                # Calidad del notch
+NOTCH_Q = 40                # Calidad del notch
  
 # CCA
 CCA_HARMONICS = [1, 2, 3]   # Usar fundamental, 2da y 3ra armónica
