@@ -39,7 +39,7 @@ h1 {
 /* KEYPAD — 4 celdas en fila */
 #keypad {
   display: flex;
-  gap: 1.5cm;
+  gap: 3cm;
   justify-content: center;
   flex-wrap: wrap;
 }
