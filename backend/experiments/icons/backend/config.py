@@ -26,8 +26,8 @@ CELLS = {
 }
  
 # --- Parámetros de clasificación ---
-TRIAL_SEC = 40          # Duración de cada prueba (s)
-CCA_THRESHOLD = 0.20      # Umbral de correlación canónica
+TRIAL_SEC = 60          # Duración de cada prueba (s)
+CCA_THRESHOLD = 0.12      # Umbral de correlación canónica
 NOTCH_FREQ = [50, 100, 150]  # Frecuencias a filtrar (Hz)
 NOTCH_WIDTH = 2           # Ancho de banda del filtro notch (Hz)
  
