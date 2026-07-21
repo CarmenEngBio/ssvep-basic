@@ -13,8 +13,8 @@ FS = 250                    # Frecuencia de muestreo (Hz)
 UNITS_ALREADY_UV = True     # Los datos ya vienen en µV
  
 # Bandpass
-BP_LO = 1.0                 # Hz (baja)
-BP_HI = 40.0                # Hz (alta)
+BP_LO = 4.0                 # Hz (baja)
+BP_HI = 30.0                # Hz (alta)
  
 # Notch Comb
 NOTCH_FUND = 50.0           # Fundamental (Hz)
