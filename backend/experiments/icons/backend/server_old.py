@@ -94,75 +94,60 @@ bci_session = BCISession()
  
  
 async def run_trial(ws, source, trial_id: int):
-    """Ejecuta un trial con clasificación acumulativa cada 2 segundos."""
+    """Ejecuta un trial de clasificación."""
     print(f"\n[Trial {trial_id}] Iniciando...")
     bci_session.reset()
     bci_session.start_time = time.time()
-    
+ 
+    # Enviar inicio del trial
     await ws.send(json.dumps({
         "type": "trial_started",
         "trial_id": trial_id,
         "duration": TRIAL_SEC,
     }))
-    
-    best_result = {"cell_id": None, "corr": 0.0, "time_ms": 0}
+ 
+    # Acumular datos durante TRIAL_SEC
     elapsed = 0.0
-    last_classify_time = 0.0
-    
     while elapsed < TRIAL_SEC:
         raw_eeg = source.get_window()
         new_eeg, new_ts = source.get_new_samples()
-        
+ 
         if new_eeg.shape[1] > 0 and recorder.is_recording:
             recorder.write_chunk(new_eeg, new_ts)
             bci_session.add_samples(new_eeg, new_ts)
-        
-        # CLASIFICAR CADA 2 SEGUNDOS (no solo al final)
-        if len(bci_session.trial_timestamps) > FS * 2 and (elapsed - last_classify_time) >= 2.0:
-            result = bci_session.classify()
-            last_classify_time = elapsed
-            
-            if result and result["cell_id"] is not None:
-                # Encontró algo!
-                if result["corr"] > best_result["corr"]:
-                    best_result = result
-                    
-                    # Enviar feedback INMEDIATO
-                    cell_info = CELLS[result["cell_id"]]
-                    await ws.send(json.dumps({
-                        "type": "selection",
-                        "trial_id": trial_id,
-                        "cell_id": result["cell_id"],
-                        "emoji": cell_info["emoji"],
-                        "label": cell_info["label"],
-                        "correlation": result["corr"],
-                        "time_ms": result["time_ms"],
-                    }))
-                    print(f"[Selection] {cell_info['label']} - Corr: {result['corr']:.4f}")
-                    
-                    # Salir al encontrar
-                    break
-        
+ 
         elapsed = time.time() - bci_session.start_time
-        await asyncio.sleep(0.1)
-    
-    # Si no encontró nada, clasificar una última vez
-    if best_result["cell_id"] is None and bci_session.has_enough_data():
-        result = bci_session.classify()
-        if result and result["cell_id"] is not None:
-            best_result = result
-    
-    # Enviar resultado final
-    if best_result["cell_id"] is None:
-        await ws.send(json.dumps({
+        await asyncio.sleep(0.05)
+ 
+    # Clasificar
+    result = bci_session.classify()
+ 
+    if result and result["cell_id"] is not None:
+        # Selección exitosa
+        cell_info = CELLS[result["cell_id"]]
+        msg = {
+            "type": "selection",
+            "trial_id": trial_id,
+            "cell_id": result["cell_id"],
+            "emoji": cell_info["emoji"],
+            "label": cell_info["label"],
+            "correlation": result["corr"],
+            "time_ms": result["time_ms"],
+        }
+ 
+        print(f"[Selection] Celda {result['cell_id']} "
+              f"({cell_info['label']}) - Correlación: {result['corr']}")
+    else:
+        # No hay selección
+        msg = {
             "type": "no_selection",
             "trial_id": trial_id,
-            "correlation": best_result["corr"] if best_result["corr"] > 0 else 0.0,
-            "reason": "No se detectó patrón SSVEP",
-        }))
+            "correlation": result["corr"] if result else 0.0,
+            "reason": "Correlación bajo umbral",
+        }
         print(f"[No Selection] Correlación insuficiente")
-    
-    await ws.send(json.dumps({"type": "session_ended"}))
+ 
+    await ws.send(json.dumps(msg))
  
  
 async def handler(ws, source):
@@ -203,10 +188,7 @@ async def handler(ws, source):
  
             # Monitorizar calidad de señal continuamente
             raw_eeg = source.get_window()
-            if raw_eeg is not None:
-                occ_var = float(np.mean(np.var(raw_eeg, axis=1)))
-            else:
-                occ_var = 0.0
+            occ_var = float(np.mean(np.var(raw_eeg[4:8], axis=1)))
  
             await ws.send(json.dumps({
                 "type": "status",
@@ -232,7 +214,6 @@ async def main():
         print(f"    {cid}. {info['emoji']} {info['label']:25} → {info['freq']} Hz")
     print(f"\n  Umbral CCA: {CCA_THRESHOLD}")
     print(f"  Duración por trial: {TRIAL_SEC}s")
-    print("  Clasificación: Acumulativa cada 2 segundos")
     print("  Preprocesamiento: Notch + CAR")
     print("  Solo conexión con hardware Cyton.")
     print("=" * 70)
