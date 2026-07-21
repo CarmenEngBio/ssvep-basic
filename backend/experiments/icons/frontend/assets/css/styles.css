@@ -15,19 +15,19 @@ body {
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  gap: 1.5rem;
+  gap: 2rem;
 }
  
 h1 {
-  font-size: 1.3rem;
+  font-size: 2rem;
   color: #aaa;
   letter-spacing: 0.1em;
   font-weight: 400;
-  margin-top: 1rem;
+  margin-top: 2rem;
 }
  
 #status {
-  font-size: 0.9rem;
+  font-size: 1.5rem;
   color: #888;
   transition: color 0.3s;
 }
@@ -39,21 +39,21 @@ h1 {
 /* KEYPAD — 4 celdas en fila */
 #keypad {
   display: flex;
-  gap: 1.5cm;
+  gap: 3cm;
   justify-content: center;
   flex-wrap: wrap;
 }
  
 /* CELDAS GRANDES */
 .key {
-  width: 7cm;
-  height: 7cm;
-  border-radius: 12px;
+  width: 10cm;
+  height: 10cm;
+  border-radius: 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.3cm;
+  gap: 1cm;
   font-weight: 700;
   color: #000;
   user-select: none;
@@ -62,12 +62,12 @@ h1 {
 }
  
 .key .emoji {
-  font-size: 2.5rem;
+  font-size: 4rem;
   line-height: 1;
 }
  
 .key .label {
-  font-size: 0.65rem;
+  font-size: 0.55rem;
   font-weight: 600;
   text-align: center;
   text-transform: uppercase;
@@ -77,7 +77,7 @@ h1 {
 /* FLICKERING */
 .key.on {
   background: #ffffff;
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
 }
  
 .key.off {
@@ -93,7 +93,7 @@ h1 {
 }
  
 #phase-label {
-  font-size: 0.85rem;
+  font-size: 1rem;
   color: #6abf69;
   min-height: 1.2em;
   text-align: center;
@@ -104,16 +104,16 @@ h1 {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
 }
  
 #test-panel button {
   background: #2e2e2e;
   border: 1px solid #444;
-  border-radius: 6px;
+  border-radius: 8px;
   color: #ccc;
-  padding: 0.7rem 1.5rem;
-  font-size: 0.9rem;
+  padding: 1rem 2rem;
+  font-size: 1rem;
   cursor: pointer;
   transition: all 0.2s;
   font-weight: 600;
@@ -131,40 +131,40 @@ h1 {
 }
  
 #timer {
-  font-size: 0.9rem;
+  font-size: 1rem;
   color: #e6a817;
   min-height: 1.2em;
   font-weight: 600;
 }
  
 #rec-filename {
-  font-size: 0.7rem;
+  font-size: 0.8rem;
   color: #555;
   word-break: break-all;
-  max-width: 500px;
+  max-width: 600px;
   text-align: center;
 }
  
 /* RESPONSIVE */
 @media (max-width: 768px) {
   #keypad {
-    gap: 0.8cm;
+    gap: 1.5cm;
   }
  
   .key {
-    width: 5cm;
-    height: 5cm;
+    width: 7cm;
+    height: 7cm;
   }
  
   .key .emoji {
-    font-size: 1.8rem;
+    font-size: 2rem;
   }
  
   .key .label {
-    font-size: 0.55rem;
+    font-size: 0.7rem;
   }
  
   h1 {
-    font-size: 1.1rem;
+    font-size: 1.3rem;
   }
 }
