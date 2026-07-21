@@ -39,15 +39,15 @@ h1 {
 /* KEYPAD — 4 celdas en fila */
 #keypad {
   display: flex;
-  gap: 3cm;
+  gap: 1.5cm;
   justify-content: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
  
 /* CELDAS GRANDES */
 .key {
-  width: 10cm;
-  height: 10cm;
+  width: 8cm;
+  height: 8cm;
   border-radius: 20px;
   display: flex;
   flex-direction: column;
@@ -62,7 +62,7 @@ h1 {
 }
  
 .key .emoji {
-  font-size: 4rem;
+  font-size: 3.5rem;
   line-height: 1;
 }
  
