@@ -18,7 +18,7 @@ BP_HI = 40.0                # Hz (alta)
  
 # Notch Comb
 NOTCH_FUND = 50.0           # Fundamental (Hz)
-NOTCH_NH = 1                # Solo 50 Hz (no 100, 150)
+NOTCH_NH = 3               # Solo 50 Hz (no 100, 150)
 NOTCH_Q = 30                # Calidad del notch
  
 # CCA
