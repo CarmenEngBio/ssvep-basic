@@ -96,7 +96,8 @@ class EEGProcessor:
         eeg_data: shape (n_channels, n_samples)
         """
         mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
-        return eeg_data - mean_ref
+        #return eeg_data - mean_ref
+        return eeg_data
     
     def generate_references(self, frequency, n_samples):
         """
