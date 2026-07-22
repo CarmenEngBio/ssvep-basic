@@ -20,7 +20,7 @@ class CytonEEG:
 
         self.board.prepare_session()
         self.board.start_stream()
-        print(f"✓ Cyton conectada en {SERIAL_PORT}")
+        print(f"✓ Cyton connected at {SERIAL_PORT}")
 
         # Buffer acumulativo
         self.buffer = np.zeros((N_CHANNELS, 0))
@@ -72,7 +72,7 @@ class CytonEEG:
     def stop(self) -> None:
         self.board.stop_stream()
         self.board.release_session()
-        print("✓ Cyton desconectada")
+        print("✓ Cyton diconnected")
 
 """
 class CytonEEG:

@@ -82,7 +82,7 @@ async def run_blocks(ws, source):
         emoji = cell_info["emoji"]
         label = cell_info["label"]
         
-        print(f"\n[Bloque {cell_id}] Usuario debe mirar: {emoji} {label} ({freq} Hz) durante 40s...")
+        print(f"\n[Block {cell_id}] User must gaze at: {emoji} {label} ({freq} Hz) during 60s...")
         
         # Avisar al frontend
         await ws.send(json.dumps({
@@ -127,13 +127,13 @@ async def run_blocks(ws, source):
         
         # Avisar resultado al frontend
         if result["correct"]:
-            status = "✅ CORRECTO"
+            status = "✅ CORRECT"
             color = "green"
         else:
-            status = f"❌ INCORRECTO (detectó {result['freq']:.2f}Hz)"
+            status = f"❌ INCORRECT (detected {result['freq']:.2f}Hz)"
             color = "red"
         
-        print(f"[Resultado] {emoji} {label}: Corr={result['corr']:.4f} — {status}")
+        print(f"[Result] {emoji} {label}: Corr={result['corr']:.4f} — {status}")
         
         await ws.send(json.dumps({
             "type": "block_result",
@@ -156,7 +156,7 @@ async def run_blocks(ws, source):
     correct_count = sum(1 for r in results if r["correct"])
     accuracy = (correct_count / len(results)) * 100 if results else 0
     
-    print(f"\n[RESUMEN] Precisión: {correct_count}/{len(results)} ({accuracy:.1f}%)")
+    print(f"\n[SUMMARY] Accuracy: {correct_count}/{len(results)} ({accuracy:.1f}%)")
     
     await ws.send(json.dumps({
         "type": "session_ended",
@@ -168,7 +168,7 @@ async def run_blocks(ws, source):
  
  
 async def handler(ws, source):
-    print(f"✓ Cliente conectado: {ws.remote_address}")
+    print(f"✓ Client connected: {ws.remote_address}")
     block_task = None
  
     try:
@@ -211,7 +211,7 @@ async def handler(ws, source):
             await asyncio.sleep(0.5)
  
     except websockets.exceptions.ConnectionClosed:
-        print("✗ Cliente desconectado")
+        print("✗ Client disconnected")
     finally:
         if block_task and not block_task.done():
             block_task.cancel()

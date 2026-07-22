@@ -49,9 +49,9 @@ def construir_comb_notch(fundamental=NOTCH_FUND, n_harmonics=NOTCH_NH, Q=NOTCH_Q
 _SOS_BP = construir_bandpass()
 _SOS_NOTCH = construir_comb_notch()
  
-print("[BCI Processing] Filtros pre-computados:")
+print("[BCI Processing] Pre-computing filters:")
 print(f"  - Bandpass: {BP_LO}-{BP_HI} Hz (double)")
-print(f"  - Notch: 50 Hz solo (Q={NOTCH_Q})")
+print(f"  - Notch: 50 Hz (Q={NOTCH_Q})")
 print(f"  - CCA Harmonics: [1, 2, 3]")
  
 # ==========================================

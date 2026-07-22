@@ -41,7 +41,7 @@ class EEGRecorder:
  
         with self._lock:
             if self._recording:
-                print("[Recorder] Ya está grabando.")
+                print("[Recorder] Already recording.")
                 return None
  
             self._file = open(filename, "w", buffering=1, encoding="utf-8")
@@ -56,7 +56,7 @@ class EEGRecorder:
             self._sample_count = 0
             self.current_filename = filename
  
-        print(f"[Recorder] Grabando en: {filename}")
+        print(f"[Recorder] Registering at file: {filename}")
         return filename
  
     def stop(self):
@@ -69,7 +69,7 @@ class EEGRecorder:
                 self._file.close()
                 self._file = None
  
-        print(f"[Recorder] Fichero guardado: {self.current_filename}")
+        print(f"[Recorder] Saved recording session file: {self.current_filename}")
  
     def set_marker(self, value: float):
         with self._lock:
