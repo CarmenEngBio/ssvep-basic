@@ -223,7 +223,7 @@ async def main():
     print("=" * 70)
     print("  SSVEP Online Assistive BCI ")
     print("=" * 70)
-    print("  Structure: 4 blocks of 60s for each cell )")
+    print("  Structure: 4 blocks of 60s for each cell ")
     print("  Classification: at the end of each registered data cell")
     print("  Frequencies:")
     for cid, info in sorted(CELLS.items()):
