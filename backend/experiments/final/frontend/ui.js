@@ -10,13 +10,13 @@ function setConnectionStatus(state) {
   }
   
   if (state === 'connected') {
-    el.textContent = '● Conectado al servidor';
+    el.textContent = '● Connecting to server';
     el.style.color = '#51cf66';
-    console.log('[UI] Estado: Conectado');
+    console.log('[UI] Estado: Connected');
   } else {
-    el.textContent = '● Desconectado - reintentando...';
+    el.textContent = '● Disconnected - reattempting...';
     el.style.color = '#ff6b6b';
-    console.log('[UI] Estado: Desconectado');
+    console.log('[UI] Estado: Disconnected');
   }
 }
  
@@ -66,7 +66,7 @@ function startCountdown(seconds) {
   }
   
   var remaining = seconds;
-  timer.textContent = 'Grabando... ' + remaining + ' s';
+  timer.textContent = 'Recording... ' + remaining + ' s';
  
   if (countdownInterval) clearInterval(countdownInterval);
   
@@ -77,7 +77,7 @@ function startCountdown(seconds) {
       countdownInterval = null;
       timer.textContent = '';
     } else {
-      timer.textContent = 'Grabando... ' + remaining + ' s';
+      timer.textContent = 'Recording... ' + remaining + ' s';
     }
   }, 1000);
 }
