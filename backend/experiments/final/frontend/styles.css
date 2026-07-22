@@ -79,11 +79,13 @@ h1 {
 .key.on {
   background: #ffffff;
   box-shadow: 0 0 30px rgba(255, 255, 255, 0.8);
+  filter: brightness(1.2) saturate(0.5);  /* ← Uniformiza color */
 }
  
 .key.off {
   background: #0a0a0a;
   color: #666;
+   filter: brightness(0.7) saturate(0.5);  /* ← Uniformiza apagado */
 }
  
 /* SELECCIONADA (✅ CORRECTO) */
