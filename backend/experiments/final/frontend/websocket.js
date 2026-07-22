@@ -71,7 +71,7 @@ function handleBlockStarted(msg) {
   console.log('[Block Started] ID:', msg.cell_id, 'Label:', msg.label, 'Freq:', msg.freq);
   
   // Mostrar instrucción
-  var instruction = msg.emoji + ' Mira: ' + msg.label + ' (' + msg.freq + 'Hz)';
+  var instruction = msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + 'Hz)';
   showMessage(instruction, 'info');
   
   // Iniciar countdown
@@ -118,7 +118,7 @@ function handleSessionEnded(msg) {
   stopCountdown();
   clearCellSelection();
   
-  var summary = '✓ Sesión finalizada - Precisión: ' + msg.correct + '/' + msg.total + 
+  var summary = '✓ Finished session - Accuracy: ' + msg.correct + '/' + msg.total + 
                 ' (' + msg.accuracy + '%)';
   showMessage(summary, 'success');
   
