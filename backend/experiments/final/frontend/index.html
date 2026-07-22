@@ -3,38 +3,38 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>BCI Asistencial SSVEP</title>
+  <title>SSVEP Assistive BCI</title>
   <link rel="stylesheet" href="./styles.css"/>
 </head>
 <body>
  
-  <h1>BCI Asistencial SSVEP</h1>
+  <h1>SSVEP Assistive BCI</h1>
   
-  <div id="status">● Conectando con servidor...</div>
+  <div id="status">● Connecting with server ...</div>
  
   <div id="keypad">
     <div class="key off" id="cell-1" data-key="1" data-freq="8.57">
       <div class="emoji">🍽️</div>
-      <div class="label">Comer</div>
+      <div class="label">Eat</div>
     </div>
     <div class="key off" id="cell-2" data-key="2" data-freq="10.0">
       <div class="emoji">❄️</div>
-      <div class="label">Frío</div>
+      <div class="label">Cold</div>
     </div>
     <div class="key off" id="cell-3" data-key="3" data-freq="12.0">
-      <div class="emoji">🚨</div>
+      <div class="emoji">📞</div>
       <div class="label">SOS</div>
     </div>
     <div class="key off" id="cell-4" data-key="4" data-freq="15.0">
       <div class="emoji">🚽</div>
-      <div class="label">Baño</div>
+      <div class="label">WC</div>
     </div>
   </div>
  
   <div id="phase-label">—</div>
  
   <div id="test-panel">
-    <button id="btn-test" onclick="startTest()">Iniciar Sesión</button>
+    <button id="btn-test" onclick="startTest()">Start Session</button>
     <button id="btn-stop" onclick="stopTest()" style="display: none; background: #ff6b6b; border-color: #ff6b6b;">Detener Sesión</button>
     <div id="timer"></div>
   </div>

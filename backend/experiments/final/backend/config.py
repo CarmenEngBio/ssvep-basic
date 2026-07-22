@@ -19,10 +19,10 @@ WINDOW     = FS * WINDOW_SEC
  
 # --- Celdas vitales y frecuencias ---
 CELLS = {
-    1: {"emoji": "🍽️",  "label": "Comer", "freq": 8.57},
-    2: {"emoji": "❄️",  "label": "Frío", "freq": 10.0},
-    3: {"emoji": "🚨",  "label": "SOS", "freq": 12.0},
-    4: {"emoji": "🚽",  "label": "Baño", "freq": 15.0},
+    1: {"emoji": "🍽️",  "label": "Eat", "freq": 8.57},
+    2: {"emoji": "❄️",  "label": "Cold", "freq": 10.0},
+    3: {"emoji": "📞",  "label": "SOS", "freq": 12.0},
+    4: {"emoji": "🚽",  "label": "WC", "freq": 15.0},
 }
  
 # --- Parámetros de clasificación ---
