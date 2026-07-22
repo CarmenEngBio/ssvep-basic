@@ -221,22 +221,22 @@ async def handler(ws, source):
  
 async def main():
     print("=" * 70)
-    print("  BCI Asistencial SSVEP — Exp2 + Clasificación Online")
+    print("  SSVEP Online Assistive BCI ")
     print("=" * 70)
-    print("  Estructura: 4 bloques de 40s (Usuario mira cada celda)")
-    print("  Clasificación: Al final de cada bloque")
-    print("  Frecuencias:")
+    print("  Structure: 4 blocks of 60s for each cell )")
+    print("  Classification: at the end of each registered data cell")
+    print("  Frequencies:")
     for cid, info in sorted(CELLS.items()):
         print(f"    {cid}. {info['emoji']} {info['label']:20} → {info['freq']} Hz")
-    print(f"\n  Duración total: {TOTAL_SEC}s")
-    print("  Solo conexión con hardware Cyton")
+    print(f"\n  Total duration: {TOTAL_SEC}s")
+    print("  Connected to Cyton hardware ")
     print("=" * 70)
  
     source = CytonEEG()
  
-    print(f"  Esperando {WINDOW_SEC}s para llenar el buffer EEG...")
+    print(f"  Waiting {WINDOW_SEC}s to fill the EEG buffer ...")
     await asyncio.sleep(WINDOW_SEC)
-    print("  Listo! Abre el navegador y pulsa 'Iniciar Sesión'.\n")
+    print("  Ready! Open the browser and click to 'Start Session' .\n")
  
     try:
         async with websockets.serve(
@@ -246,7 +246,7 @@ async def main():
             await asyncio.Future()
     finally:
         source.stop()
-        print("Cyton desconectada.")
+        print("Cyton disconnected.")
  
  
 if __name__ == "__main__":
