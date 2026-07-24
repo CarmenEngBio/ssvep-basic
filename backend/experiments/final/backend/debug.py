@@ -209,39 +209,54 @@ def detectar_bloques(df, fs=FS, dur_bloque_s=60):
     return [(i * n, (i + 1) * n) for i in range(len(EXPECTED_FREQS))]
 
 
-def calcular_correlaciones_por_bloque(eeg_car, bloques):
-    """CCA por bloque — comparable directamente con el log del sistema online."""
+def calcular_correlaciones_por_bloque(eeg_car, eeg_sin_car, bloques):
+    """CCA por bloque, comparando CON CAR vs SIN CAR."""
     from sklearn.cross_decomposition import CCA
 
-    print(f"\n9. CCA POR BLOQUE (comparable con el sistema online)")
-    aciertos = 0
+    def cca_corr(segmento, freq, t):
+        ref = np.column_stack([
+            np.sin(2*np.pi*freq*t),   np.cos(2*np.pi*freq*t),
+            np.sin(2*np.pi*freq*2*t), np.cos(2*np.pi*freq*2*t),
+        ])
+        cca = CCA(n_components=1)
+        cca.fit(segmento.T, ref)
+        U, V = cca.transform(segmento.T, ref)
+        return np.corrcoef(U[:, 0], V[:, 0])[0, 1]
+
+    print(f"\n9. CCA POR BLOQUE — CON CAR vs SIN CAR")
+    aciertos = {"CON CAR": 0, "SIN CAR": 0}
 
     for i, (inicio, fin) in enumerate(bloques):
         freq_obj = EXPECTED_FREQS[i] if i < len(EXPECTED_FREQS) else None
-        segmento = eeg_car[:, inicio:fin]
-        t = np.arange(segmento.shape[1]) / FS
+        seg_car     = eeg_car[:, inicio:fin]
+        seg_sin_car = eeg_sin_car[:, inicio:fin]
+        t = np.arange(seg_car.shape[1]) / FS
 
         print(f"\n   Bloque {i+1} (muestras {inicio}:{fin}, esperado: {freq_obj} Hz)")
-        correlaciones = {}
+        print(f"      {'Freq':>7} | {'CON CAR':>9} | {'SIN CAR':>9}")
+        print(f"      {'-'*7}-+-{'-'*9}-+-{'-'*9}")
+
+        corr_car, corr_sin = {}, {}
         for freq in EXPECTED_FREQS:
-            ref = np.column_stack([
-                np.sin(2*np.pi*freq*t), np.cos(2*np.pi*freq*t),
-                np.sin(2*np.pi*freq*2*t), np.cos(2*np.pi*freq*2*t),
-            ])
-            cca = CCA(n_components=1)
-            cca.fit(segmento.T, ref)
-            U, V = cca.transform(segmento.T, ref)
-            corr = np.corrcoef(U[:, 0], V[:, 0])[0, 1]
-            correlaciones[freq] = corr
-            print(f"      {freq:5.2f} Hz: {corr:.4f}")
+            c_car = cca_corr(seg_car, freq, t)
+            c_sin = cca_corr(seg_sin_car, freq, t)
+            corr_car[freq], corr_sin[freq] = c_car, c_sin
+            marca = " ←" if freq == freq_obj else ""
+            print(f"      {freq:7.2f} | {c_car:9.4f} | {c_sin:9.4f}{marca}")
 
-        detectada = max(correlaciones, key=correlaciones.get)
-        acierto = freq_obj is not None and np.isclose(detectada, freq_obj)
-        aciertos += int(acierto)
-        print(f"   → Detectado: {detectada} Hz {'✅' if acierto else '❌'}")
+        det_car = max(corr_car, key=corr_car.get)
+        det_sin = max(corr_sin, key=corr_sin.get)
+        ok_car = freq_obj is not None and np.isclose(det_car, freq_obj)
+        ok_sin = freq_obj is not None and np.isclose(det_sin, freq_obj)
+        aciertos["CON CAR"] += int(ok_car)
+        aciertos["SIN CAR"] += int(ok_sin)
+        print(f"      → CON CAR: {det_car} Hz {'✅' if ok_car else '❌'}   "
+              f"| SIN CAR: {det_sin} Hz {'✅' if ok_sin else '❌'}")
 
-    print(f"\n   RESUMEN: {aciertos}/{len(bloques)} bloques correctos "
-          f"({100*aciertos/len(bloques):.1f}%)")
+    n = len(bloques)
+    print(f"\n   RESUMEN:")
+    print(f"      CON CAR: {aciertos['CON CAR']}/{n} ({100*aciertos['CON CAR']/n:.1f}%)")
+    print(f"      SIN CAR: {aciertos['SIN CAR']}/{n} ({100*aciertos['SIN CAR']/n:.1f}%)")
  
 # ==========================================
 # MAIN
@@ -275,7 +290,7 @@ def main(filepath):
     #calcular_correlaciones_cca(eeg_proc, eeg_sin_car)
 
     bloques = detectar_bloques(df)
-    calcular_correlaciones_por_bloque(eeg_proc, bloques)
+    calcular_correlaciones_por_bloque(eeg_proc, eeg_notch, bloques)
     
     print("\n" + "="*80)
     print("RECOMENDACIONES")
