@@ -13,7 +13,7 @@ import sys
  
 FS = 250
 BP_LO = 5.0
-BP_HI = 30.0
+BP_HI = 25.0
 NOTCH_FUND = 50.0
 NOTCH_Q = 40
 USED_CHANNELS = [4, 5, 6, 7]  # P7, P8, O1, O2
@@ -184,6 +184,64 @@ def calcular_correlaciones_cca(eeg_car, eeg_sin_car):
             corr = np.corrcoef(U[:, 0], V[:, 0])[0, 1]
             
             print(f"      {freq:5.2f} Hz: {corr:.4f}")
+
+
+def detectar_bloques(df, fs=FS, dur_bloque_s=60):
+    """
+    Detecta los límites de cada bloque de estímulo.
+    Usa una columna de marcador si existe; si no, asume bloques
+    fijos de dur_bloque_s segundos en el orden de EXPECTED_FREQS.
+    """
+    posibles = [c for c in df.columns if any(k in c.lower() for k in ['marker', 'label', 'stim', 'event', 'block'])]
+
+    if posibles:
+        col = posibles[0]
+        print(f"   Usando columna de marcador: '{col}'")
+        bloques = []
+        for _, grupo in df.groupby(col):
+            idx = grupo.index.values
+            bloques.append((idx[0], idx[-1] + 1))
+        return bloques
+
+    print(f"   ⚠ No se encontró columna de marcador — asumiendo bloques fijos de "
+          f"{dur_bloque_s}s en orden {EXPECTED_FREQS}")
+    n = int(dur_bloque_s * fs)
+    return [(i * n, (i + 1) * n) for i in range(len(EXPECTED_FREQS))]
+
+
+def calcular_correlaciones_por_bloque(eeg_car, bloques):
+    """CCA por bloque — comparable directamente con el log del sistema online."""
+    from sklearn.cross_decomposition import CCA
+
+    print(f"\n9. CCA POR BLOQUE (comparable con el sistema online)")
+    aciertos = 0
+
+    for i, (inicio, fin) in enumerate(bloques):
+        freq_obj = EXPECTED_FREQS[i] if i < len(EXPECTED_FREQS) else None
+        segmento = eeg_car[:, inicio:fin]
+        t = np.arange(segmento.shape[1]) / FS
+
+        print(f"\n   Bloque {i+1} (muestras {inicio}:{fin}, esperado: {freq_obj} Hz)")
+        correlaciones = {}
+        for freq in EXPECTED_FREQS:
+            ref = np.column_stack([
+                np.sin(2*np.pi*freq*t), np.cos(2*np.pi*freq*t),
+                np.sin(2*np.pi*freq*2*t), np.cos(2*np.pi*freq*2*t),
+            ])
+            cca = CCA(n_components=1)
+            cca.fit(segmento.T, ref)
+            U, V = cca.transform(segmento.T, ref)
+            corr = np.corrcoef(U[:, 0], V[:, 0])[0, 1]
+            correlaciones[freq] = corr
+            print(f"      {freq:5.2f} Hz: {corr:.4f}")
+
+        detectada = max(correlaciones, key=correlaciones.get)
+        acierto = freq_obj is not None and np.isclose(detectada, freq_obj)
+        aciertos += int(acierto)
+        print(f"   → Detectado: {detectada} Hz {'✅' if acierto else '❌'}")
+
+    print(f"\n   RESUMEN: {aciertos}/{len(bloques)} bloques correctos "
+          f"({100*aciertos/len(bloques):.1f}%)")
  
 # ==========================================
 # MAIN
@@ -213,8 +271,11 @@ def main(filepath):
     eeg_proc, eeg_notch = analizar_signal(eeg_raw, "CANALIZA REALES (P7, P8, O1, O2)", sos_bp, sos_notch)
     
     # Calcular TAMBIÉN sin CAR
-    eeg_sin_car = eeg_notch  # Sin CAR
-    calcular_correlaciones_cca(eeg_proc, eeg_sin_car)
+    #eeg_sin_car = eeg_notch  # Sin CAR
+    #calcular_correlaciones_cca(eeg_proc, eeg_sin_car)
+
+    bloques = detectar_bloques(df)
+    calcular_correlaciones_por_bloque(eeg_proc, bloques)
     
     print("\n" + "="*80)
     print("RECOMENDACIONES")
