@@ -1,5 +1,6 @@
 # real_test_arquitectures.py
 
+import sys
 import numpy as np
 import pandas as pd
 from scipy.signal import butter, iirnotch, sosfiltfilt, tf2sos
@@ -7,15 +8,15 @@ from sklearn.cross_decomposition import CCA
 from pathlib import Path
 
 FS = 250
-CHUNK_SIZE = int(FS * 4)  # 4 segundos
+CHUNK_SIZE = int(FS * 4)
 
 def load_recording(filepath):
     """Carga archivo .txt."""
     df = pd.read_csv(filepath, skiprows=4)
     df.columns = df.columns.str.strip()
     eeg_cols = [f'EXG Channel {i}' for i in range(8)]
-    eeg = df[eeg_cols].values.T / 1e6  # Convertir a V
-    return eeg[4:8]  # P7, P8, O1, O2
+    eeg = df[eeg_cols].values.T / 1e6
+    return eeg[4:8]
 
 def preprocess(eeg, use_car=True):
     """Procesa con/sin CAR."""
@@ -50,27 +51,19 @@ def classify_cca(eeg, target_freqs):
         results[freq] = corr
     return results
 
-# ==========================================
-# ARQUITECTURAS (igual que test sintético)
-# ==========================================
-
 def arquitectura_chunks(eeg, use_car=True):
-    """Como tu código actual."""
     chunks = []
     for i in range(0, eeg.shape[1], CHUNK_SIZE):
         chunk = eeg[:, i:i+CHUNK_SIZE]
         if chunk.shape[1] > 0:
             chunks.append(chunk)
-    
     eeg_concatenado = np.hstack(chunks)
     return preprocess(eeg_concatenado, use_car=use_car)
 
 def arquitectura_offline(eeg, use_car=True):
-    """Todo de una vez."""
     return preprocess(eeg, use_car=use_car)
 
 def arquitectura_streaming(eeg, use_car=True):
-    """Procesa cada chunk."""
     chunks_procesados = []
     for i in range(0, eeg.shape[1], CHUNK_SIZE):
         chunk = eeg[:, i:i+CHUNK_SIZE]
@@ -80,13 +73,14 @@ def arquitectura_streaming(eeg, use_car=True):
     return np.hstack(chunks_procesados)
 
 # ==========================================
-# MAIN
+# MAIN - ACEPTA ARGUMENTO
 # ==========================================
 
-recordings_dir = Path(r"C:\Users\carme\Desktop\OpenBCI\OpenBCI_GUI\Documents&Recordings\Trials 13")
-
-# Usar recording session 1 (la que usaste en debug)
-recording_file = recordings_dir / "recording session 1.txt"
+# Usar argumento o default
+if len(sys.argv) > 1:
+    recording_file = Path(sys.argv[1])  # ← RUTA RELATIVA
+else:
+    recording_file = Path("recordings/bci_exp2_online_20260722_173915.txt")  # default
 
 print("="*90)
 print(f"TEST CON DATOS REALES: {recording_file.name}")
@@ -94,9 +88,9 @@ print("="*90)
 
 if not recording_file.exists():
     print(f"❌ Archivo no encontrado: {recording_file}")
+    print(f"   Ruta absoluta: {recording_file.absolute()}")
     exit(1)
 
-# Cargar
 print(f"\n1. Cargando {recording_file.name}...")
 eeg = load_recording(str(recording_file))
 print(f"   Shape: {eeg.shape}")
@@ -107,7 +101,6 @@ eeg_bloque = eeg[:, :FS*60]
 freqs_target = [8.57, 10.0, 12.0, 15.0]
 resultados = {}
 
-# TEST 3 ARQUITECTURAS
 print("\n2. PRUEBA 1: Chunks acumulados (TU CÓDIGO ACTUAL)")
 print("-" * 90)
 for use_car in [True, False]:
@@ -164,7 +157,7 @@ if chunks_car == offline_car:
     print("   El problema NO es chunks desfasados")
 elif abs(chunks_car - offline_car) > 0.02:
     print("⚠️ CHUNKS y OFFLINE DIFIEREN")
-    print("   Chunks SÍ degrada respecto a offline")
+    print("   Chunks SÍ degradan respecto a offline")
 else:
     print("~ CHUNKS y OFFLINE son MUY SIMILARES")
 
