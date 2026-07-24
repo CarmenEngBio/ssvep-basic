@@ -155,7 +155,7 @@ def analizar_signal(eeg_data, label, sos_bp, sos_notch):
     
     return eeg_car
 
-    def calcular_correlaciones_cca(eeg_car, eeg_sin_car):
+def calcular_correlaciones_cca(eeg_car, eeg_sin_car):
     """Comparar correlaciones CCA con y sin CAR."""
     from sklearn.cross_decomposition import CCA
     
