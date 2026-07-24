@@ -18,7 +18,7 @@ NOTCH_FUND = 50.0
 NOTCH_Q = 40
 USED_CHANNELS = [4, 5, 6, 7]  # P7, P8, O1, O2
 
-USAR_CAR = False
+USAR_CAR = True
  
 # Frecuencias esperadas
 EXPECTED_FREQS = [8.57, 10.0, 12.0, 15.0]
