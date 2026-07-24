@@ -153,7 +153,8 @@ def analizar_signal(eeg_data, label, sos_bp, sos_notch):
         poder = pxx_filt[idx]
         print(f"   {freq:5.2f} Hz: {poder:.2e}")
     
-    return eeg_car
+    #return eeg_car
+    return eeg_car, eeg_notch
 
 def calcular_correlaciones_cca(eeg_car, eeg_sin_car):
     """Comparar correlaciones CCA con y sin CAR."""
@@ -208,7 +209,8 @@ def main(filepath):
     sos_bp, sos_notch = construir_filtros()
     
     # Analizar
-    eeg_proc = analizar_signal(eeg_raw, "CANALIZA REALES (P7, P8, O1, O2)", sos_bp, sos_notch)
+    #eeg_proc = analizar_signal(eeg_raw, "CANALIZA REALES (P7, P8, O1, O2)", sos_bp, sos_notch)
+    eeg_proc, eeg_notch = analizar_signal(eeg_raw, "CANALIZA REALES (P7, P8, O1, O2)", sos_bp, sos_notch)
     
     # Calcular TAMBIÉN sin CAR
     eeg_sin_car = eeg_notch  # Sin CAR
