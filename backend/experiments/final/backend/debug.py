@@ -12,11 +12,13 @@ import sys
 # ==========================================
  
 FS = 250
-BP_LO = 1.0
-BP_HI = 40.0
+BP_LO = 5.0
+BP_HI = 30.0
 NOTCH_FUND = 50.0
-NOTCH_Q = 30
+NOTCH_Q = 40
 USED_CHANNELS = [4, 5, 6, 7]  # P7, P8, O1, O2
+
+USAR_CAR = False
  
 # Frecuencias esperadas
 EXPECTED_FREQS = [8.57, 10.0, 12.0, 15.0]
@@ -90,8 +92,16 @@ def analizar_signal(eeg_data, label, sos_bp, sos_notch):
     print(f"   ✓ Notch 50 Hz")
     
     # Aplicar CAR
-    eeg_car = eeg_notch - np.mean(eeg_notch, axis=0, keepdims=True)
-    print(f"   ✓ CAR")
+    # eeg_car = eeg_notch - np.mean(eeg_notch, axis=0, keepdims=True)
+    # print(f"   ✓ CAR")
+
+    # Aplicar CAR (opcional)
+    if USAR_CAR:
+        eeg_car = eeg_notch - np.mean(eeg_notch, axis=0, keepdims=True)
+        print(f"   ✓ CAR")
+    else:
+        eeg_car = eeg_notch  # Sin CAR
+        print(f"   ⊘ CAR deshabilitado")
     
     # Estadísticas después de filtrar
     print(f"\n4. SEÑAL FILTRADA")
