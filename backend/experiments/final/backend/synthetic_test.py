@@ -1,37 +1,21 @@
-# synthetic_test.py — Test CON CAR vs SIN CAR en datos simulados
+# real_test_arquitectures.py
 
 import numpy as np
+import pandas as pd
 from scipy.signal import butter, iirnotch, sosfiltfilt, tf2sos
 from sklearn.cross_decomposition import CCA
+from pathlib import Path
 
 FS = 250
-DURATION = 60
-CHUNK_SIZE = int(FS * 4)  # 4 segundos (como en online)
+CHUNK_SIZE = int(FS * 4)  # 4 segundos
 
-# ==========================================
-# GENERAR DATOS SINTÉTICOS
-# ==========================================
-
-def generate_ssvep_signal(freq, duration=60):
-    """Genera SSVEP + ruido 50Hz."""
-    t = np.arange(int(FS * duration)) / FS
-    ssvep = 2.0 * np.sin(2 * np.pi * freq * t) + \
-            1.5 * np.sin(2 * np.pi * freq * 2 * t)
-    noise_50hz = 100.0 * np.sin(2 * np.pi * 50 * t)
-    noise_gaussian = np.random.normal(0, 5, len(t))
-    return ssvep + noise_50hz + noise_gaussian
-
-def generate_synthetic_eeg(frequencies=[8.57, 10.0, 12.0, 15.0]):
-    """Genera 4 canales."""
-    signals = []
-    for freq in frequencies:
-        sig = generate_ssvep_signal(freq, duration=DURATION)
-        signals.append(sig)
-    return np.array(signals)
-
-# ==========================================
-# PREPROCESAR
-# ==========================================
+def load_recording(filepath):
+    """Carga archivo .txt."""
+    df = pd.read_csv(filepath, skiprows=4)
+    df.columns = df.columns.str.strip()
+    eeg_cols = [f'EXG Channel {i}' for i in range(8)]
+    eeg = df[eeg_cols].values.T / 1e6  # Convertir a V
+    return eeg[4:8]  # P7, P8, O1, O2
 
 def preprocess(eeg, use_car=True):
     """Procesa con/sin CAR."""
@@ -47,10 +31,6 @@ def preprocess(eeg, use_car=True):
     if use_car:
         return eeg_notch - np.mean(eeg_notch, axis=0, keepdims=True)
     return eeg_notch
-
-# ==========================================
-# CLASIFICAR CCA
-# ==========================================
 
 def classify_cca(eeg, target_freqs):
     """Calcula correlaciones."""
@@ -71,75 +51,68 @@ def classify_cca(eeg, target_freqs):
     return results
 
 # ==========================================
-# ARQUITECTURA 1: CHUNKS ACUMULADOS (como tu código)
+# ARQUITECTURAS (igual que test sintético)
 # ==========================================
 
 def arquitectura_chunks(eeg, use_car=True):
-    """Acumula chunks, procesa al final."""
+    """Como tu código actual."""
     chunks = []
-    
-    # Simular llegada en chunks de 4s
     for i in range(0, eeg.shape[1], CHUNK_SIZE):
         chunk = eeg[:, i:i+CHUNK_SIZE]
         if chunk.shape[1] > 0:
             chunks.append(chunk)
     
-    # Junta TODO al final (como tu código)
     eeg_concatenado = np.hstack(chunks)
-    
-    # Procesa TODO junto
-    eeg_processed = preprocess(eeg_concatenado, use_car=use_car)
-    
-    return eeg_processed
-
-# ==========================================
-# ARQUITECTURA 2: TODO DE UNA VEZ (como offline)
-# ==========================================
+    return preprocess(eeg_concatenado, use_car=use_car)
 
 def arquitectura_offline(eeg, use_car=True):
-    """Procesa TODO de una vez."""
+    """Todo de una vez."""
     return preprocess(eeg, use_car=use_car)
 
-# ==========================================
-# ARQUITECTURA 3: PROCESAMIENTO POR CHUNKS (streaming)
-# ==========================================
-
 def arquitectura_streaming(eeg, use_car=True):
-    """Procesa CADA chunk independientemente."""
+    """Procesa cada chunk."""
     chunks_procesados = []
-    
     for i in range(0, eeg.shape[1], CHUNK_SIZE):
         chunk = eeg[:, i:i+CHUNK_SIZE]
-        if chunk.shape[1] >= FS * 2:  # Mínimo 2s
+        if chunk.shape[1] >= FS * 2:
             chunk_proc = preprocess(chunk, use_car=use_car)
             chunks_procesados.append(chunk_proc)
-    
-    # Junta chunks ya procesados
     return np.hstack(chunks_procesados)
 
 # ==========================================
-# TEST PRINCIPAL
+# MAIN
 # ==========================================
 
+recordings_dir = Path(r"C:\Users\carme\Desktop\OpenBCI\OpenBCI_GUI\Documents&Recordings\Trials 13")
+
+# Usar recording session 1 (la que usaste en debug)
+recording_file = recordings_dir / "recording session 1.txt"
+
 print("="*90)
-print("TEST ARQUITECTURAS: ¿Chunks desfasados afectan?")
+print(f"TEST CON DATOS REALES: {recording_file.name}")
 print("="*90)
 
-freqs_target = [8.57, 10.0, 12.0, 15.0]
+if not recording_file.exists():
+    print(f"❌ Archivo no encontrado: {recording_file}")
+    exit(1)
 
-# Generar datos
-print("\n1. Generando datos sintéticos...")
-eeg = generate_synthetic_eeg(freqs_target)
+# Cargar
+print(f"\n1. Cargando {recording_file.name}...")
+eeg = load_recording(str(recording_file))
 print(f"   Shape: {eeg.shape}")
 
-# TEST: 3 ARQUITECTURAS × 2 OPCIONES (CON/SIN CAR)
+# Usar bloque 1 (primeros 60s)
+eeg_bloque = eeg[:, :FS*60]
+
+freqs_target = [8.57, 10.0, 12.0, 15.0]
 resultados = {}
 
-print("\n2. PRUEBA 1: Chunks acumulados (ACTUAL - como tu código)")
+# TEST 3 ARQUITECTURAS
+print("\n2. PRUEBA 1: Chunks acumulados (TU CÓDIGO ACTUAL)")
 print("-" * 90)
 for use_car in [True, False]:
     label = "CON CAR" if use_car else "SIN CAR"
-    eeg_proc = arquitectura_chunks(eeg, use_car=use_car)
+    eeg_proc = arquitectura_chunks(eeg_bloque, use_car=use_car)
     corr = classify_cca(eeg_proc, freqs_target)
     resultados[f"chunks_{use_car}"] = corr
     print(f"   {label:12} → Promedio: {np.mean(list(corr.values())):.4f}")
@@ -150,7 +123,7 @@ print("\n3. PRUEBA 2: Todo de una vez (OFFLINE)")
 print("-" * 90)
 for use_car in [True, False]:
     label = "CON CAR" if use_car else "SIN CAR"
-    eeg_proc = arquitectura_offline(eeg, use_car=use_car)
+    eeg_proc = arquitectura_offline(eeg_bloque, use_car=use_car)
     corr = classify_cca(eeg_proc, freqs_target)
     resultados[f"offline_{use_car}"] = corr
     print(f"   {label:12} → Promedio: {np.mean(list(corr.values())):.4f}")
@@ -161,26 +134,21 @@ print("\n4. PRUEBA 3: Streaming (procesar cada chunk)")
 print("-" * 90)
 for use_car in [True, False]:
     label = "CON CAR" if use_car else "SIN CAR"
-    eeg_proc = arquitectura_streaming(eeg, use_car=use_car)
+    eeg_proc = arquitectura_streaming(eeg_bloque, use_car=use_car)
     corr = classify_cca(eeg_proc, freqs_target)
     resultados[f"streaming_{use_car}"] = corr
     print(f"   {label:12} → Promedio: {np.mean(list(corr.values())):.4f}")
     for freq, c in corr.items():
         print(f"      {freq:5.2f} Hz: {c:.4f}")
 
-# ==========================================
-# ANÁLISIS COMPARATIVO
-# ==========================================
-
-print("\n5. COMPARACIÓN: ¿Chunks afectan a CAR?")
+# ANÁLISIS
+print("\n5. COMPARACIÓN CON DATOS REALES")
 print("="*90)
 
 chunks_car = np.mean(list(resultados["chunks_True"].values()))
 chunks_no_car = np.mean(list(resultados["chunks_False"].values()))
-
 offline_car = np.mean(list(resultados["offline_True"].values()))
 offline_no_car = np.mean(list(resultados["offline_False"].values()))
-
 streaming_car = np.mean(list(resultados["streaming_True"].values()))
 streaming_no_car = np.mean(list(resultados["streaming_False"].values()))
 
@@ -191,15 +159,13 @@ print(f"{'Offline':<20} {offline_car:<15.4f} {offline_no_car:<15.4f} {((offline_
 print(f"{'Streaming':<20} {streaming_car:<15.4f} {streaming_no_car:<15.4f} {((streaming_no_car-streaming_car)/streaming_car*100):<14.1f}%")
 
 print("\n" + "="*90)
-print("CONCLUSIONES:")
-print("="*90)
-
-if abs((chunks_no_car-chunks_car)/chunks_car*100) > abs((offline_no_car-offline_car)/offline_car*100):
-    print("✅ CHUNKS EMPEORAN el efecto de CAR")
-    print(f"   Chunks: SIN CAR +{((chunks_no_car-chunks_car)/chunks_car*100):.1f}%")
-    print(f"   Offline: SIN CAR +{((offline_no_car-offline_car)/offline_car*100):.1f}%")
+if chunks_car == offline_car:
+    print("✅ CHUNKS y OFFLINE son IDÉNTICOS")
+    print("   El problema NO es chunks desfasados")
+elif abs(chunks_car - offline_car) > 0.02:
+    print("⚠️ CHUNKS y OFFLINE DIFIEREN")
+    print("   Chunks SÍ degrada respecto a offline")
 else:
-    print("⚠️ CAR tiene mismo efecto con/sin chunks")
-    print("   El problema NO es solo chunks desfasados")
+    print("~ CHUNKS y OFFLINE son MUY SIMILARES")
 
 print("="*90)
