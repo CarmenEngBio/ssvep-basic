@@ -154,6 +154,35 @@ def analizar_signal(eeg_data, label, sos_bp, sos_notch):
         print(f"   {freq:5.2f} Hz: {poder:.2e}")
     
     return eeg_car
+
+    def calcular_correlaciones_cca(eeg_car, eeg_sin_car):
+    """Comparar correlaciones CCA con y sin CAR."""
+    from sklearn.cross_decomposition import CCA
+    
+    print(f"\n9. COMPARACIÓN CCA: CON CAR vs SIN CAR")
+    
+    freqs_ssvep = [8.57, 10.0, 12.0, 15.0]
+    
+    for eeg, label in [(eeg_car, "CON CAR"), (eeg_sin_car, "SIN CAR")]:
+        print(f"\n   {label}:")
+        
+        for freq in freqs_ssvep:
+            # Generar referencia
+            t = np.arange(eeg.shape[1]) / FS
+            ref = np.column_stack([
+                np.sin(2*np.pi*freq*t),
+                np.cos(2*np.pi*freq*t),
+                np.sin(2*np.pi*freq*2*t),
+                np.cos(2*np.pi*freq*2*t),
+            ])
+            
+            # CCA
+            cca = CCA(n_components=1)
+            cca.fit(eeg.T, ref)
+            U, V = cca.transform(eeg.T, ref)
+            corr = np.corrcoef(U[:, 0], V[:, 0])[0, 1]
+            
+            print(f"      {freq:5.2f} Hz: {corr:.4f}")
  
 # ==========================================
 # MAIN
@@ -180,6 +209,10 @@ def main(filepath):
     
     # Analizar
     eeg_proc = analizar_signal(eeg_raw, "CANALIZA REALES (P7, P8, O1, O2)", sos_bp, sos_notch)
+    
+    # Calcular TAMBIÉN sin CAR
+    eeg_sin_car = eeg_notch  # Sin CAR
+    calcular_correlaciones_cca(eeg_proc, eeg_sin_car)
     
     print("\n" + "="*80)
     print("RECOMENDACIONES")
