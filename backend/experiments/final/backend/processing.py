@@ -164,6 +164,10 @@ class EEGProcessor:
         Y: (n_samples, n_components)
         """
         try:
+            
+            X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)
+            Y = np.nan_to_num(Y, nan=0.0, posinf=0.0, neginf=0.0)
+            
             # Normalizar
             X_norm = (X - X.mean(axis=0)) / (X.std(axis=0) + 1e-8)
             Y_norm = (Y - Y.mean(axis=0)) / (Y.std(axis=0) + 1e-8)
