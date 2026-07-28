@@ -57,6 +57,7 @@ function connect() {
 // HANDLERS PARA EXP2 + ONLINE
 // ========================================================
  
+/*
 function handleSessionStarted(msg) {
   console.log('[Session Started] Archivo:', msg.file);
   showMessage('✓ Sesión iniciada - Grabando...', 'success');
@@ -66,7 +67,32 @@ function handleSessionStarted(msg) {
   document.getElementById('btn-test').style.display = 'none';
   document.getElementById('btn-stop').style.display = 'block';
 }
+*/
  
+function handleBlockStarted(msg) {
+  console.log('[Block Started] ID:', msg.cell_id, 'Label:', msg.label, 'Freq:', msg.freq);
+
+  // Lo que antes hacía handleSessionStarted:
+  showMessage('✓ Grabando...', 'success');
+  if (msg.file) {
+    document.getElementById('rec-filename').textContent = 'Grabando: ' + msg.file;
+  }
+  document.getElementById('btn-test').style.display = 'none';
+  var btnStop = document.getElementById('btn-stop');
+  if (btnStop) btnStop.style.display = 'block';
+
+  // Instrucción de a qué celda mirar
+  var instruction = msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + 'Hz)';
+  showMessage(instruction, 'info');
+
+  startCountdown(msg.duration);
+
+  clearCellSelection();
+  var cell = document.getElementById('cell-' + msg.cell_id);
+  if (cell) cell.style.backgroundColor = '#f0f0f0';
+}
+
+/*
 function handleBlockStarted(msg) {
   console.log('[Block Started] ID:', msg.cell_id, 'Label:', msg.label, 'Freq:', msg.freq);
   
@@ -84,12 +110,13 @@ function handleBlockStarted(msg) {
     cell.style.backgroundColor = '#f0f0f0';  // Suave highlight
   }
 }
+*/
  
 function handleBlockResult(msg) {
   console.log('[Block Result]', msg);
   
   // Detener countdown
-  stopCountdown();
+  //stopCountdown();
   
   var cell = document.getElementById('cell-' + msg.cell_id);
   
@@ -136,9 +163,9 @@ function handleStatus(msg) {
     // Está grabando
   }
   // Actualizar calidad de señal
-  if (msg.signal_quality !== undefined) {
-    updateSignalQuality(msg.signal_quality);
-  }
+  //if (msg.signal_quality !== undefined) {
+  //  updateSignalQuality(msg.signal_quality);
+  //}
 }
  
 // ========================================================

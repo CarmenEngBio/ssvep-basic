@@ -103,7 +103,7 @@ async def run_blocks(ws, source):
         elapsed = 0.0
         
         while elapsed < TRIAL_SEC:
-            raw_eeg = source.get_window()
+            # raw_eeg = source.get_window()
             new_eeg, new_ts = source.get_new_samples()
             
             if new_eeg.shape[1] > 0 and recorder.is_recording:
@@ -196,16 +196,16 @@ async def handler(ws, source):
                 pass
  
             # Calidad de señal (monitoreo continuo)
-            raw_eeg = source.get_window()
-            if raw_eeg is not None:
-                occ_var = float(np.mean(np.var(raw_eeg[4:8], axis=1)))
-            else:
-                occ_var = 0.0
+            #raw_eeg = source.get_window()
+            #if raw_eeg is not None:
+                #occ_var = float(np.mean(np.var(raw_eeg[4:8], axis=1)))
+            #else:
+                #occ_var = 0.0
  
             await ws.send(json.dumps({
                 "type": "status",
                 "recording": recorder.is_recording,
-                "signal_quality": round(occ_var, 2),
+                #"signal_quality": round(occ_var, 2),
             }))
  
             await asyncio.sleep(0.5)

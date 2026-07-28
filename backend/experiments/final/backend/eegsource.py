@@ -1,9 +1,10 @@
 # bci_eegsource.py — Conexión con Cyton (solo hardware real)
  
 import numpy as np
+import asyncio
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
  
-from config import SERIAL_PORT, N_CHANNELS, WINDOW
+from config import SERIAL_PORT, N_CHANNELS, WINDOW, FS
 
 
 class CytonEEG:
@@ -26,16 +27,20 @@ class CytonEEG:
         self.buffer = np.zeros((N_CHANNELS, 0))
         self.last_window = None
 
-    def get_window(self) -> np.ndarray:
+    async def get_window(self) -> np.ndarray:
         """Obtiene ventana rodante de datos."""
         data = self.board.get_current_board_data(WINDOW)
+        num_muestras = data.shape[1] 
+        if  num_muestras < WINDOW:
+            sec_faltan = (WINDOW - num_muestras)/FS 
+            await asyncio.sleep(sec_faltan + 0.1)
+            data = self.board.get_current_board_data(WINDOW)
+            num_muestras = data.shape[1]   
         eeg = np.array([data[ch] for ch in self.eeg_chs])
-        
-        if eeg.shape[1] < WINDOW:
-            pad = np.zeros((len(self.eeg_chs), WINDOW - eeg.shape[1]))
-            eeg = np.hstack([pad, eeg])
-        
-        return eeg[:, -WINDOW:]
+        ts_ch = BoardShim.get_timestamp_channel(BoardIds.CYTON_BOARD.value)
+        time_stamps = data[ts_ch]
+        return eeg[:, -WINDOW:], time_stamps[-WINDOW:]  # Se toma únicamente la última ventana registrada (el buffer acumula toda la señal)
+
 
 
     """

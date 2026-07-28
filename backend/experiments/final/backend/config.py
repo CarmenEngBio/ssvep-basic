@@ -16,6 +16,8 @@ CHANNEL_NAMES = ["P7", "P8", "O1", "O2"]
 # --- Buffer inicial ---
 WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
+
+TARGET_CELL = 1
  
 # --- Celdas vitales y frecuencias ---
 CELLS = {
@@ -26,7 +28,7 @@ CELLS = {
 }
  
 # --- Parámetros de clasificación ---
-TRIAL_SEC = 60          # Duración de cada prueba (s)
+TRIAL_SEC = 40          # Duración de cada prueba (s)
 CCA_THRESHOLD = 0.15      # Umbral de correlación canónica
 NOTCH_FREQ = [50, 100, 150]  # Frecuencias a filtrar (Hz)
 NOTCH_WIDTH = 2           # Ancho de banda del filtro notch (Hz)

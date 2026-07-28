@@ -13,17 +13,20 @@ FS = 250                    # Frecuencia de muestreo (Hz)
 UNITS_ALREADY_UV = True     # Los datos ya vienen en µV
  
 # Bandpass
-BP_LO = 5.0                 # Hz (baja)
-BP_HI = 25.0                # Hz (alta)
+BP_LO = 7.0                  # Hz (baja)
+BP_HI = 70.0                 # Hz (alta)
  
 # Notch Comb
 NOTCH_FUND = 50.0           # Fundamental (Hz)
-NOTCH_NH = 3               # Solo 50 Hz (no 100, 150)
-NOTCH_Q = 40                # Calidad del notch
+NOTCH_NH = 3               # Solo 50 Hz, 100 y 150)
+NOTCH_Q = 30                # Calidad del notch
  
 # CCA
 CCA_HARMONICS = [1, 2, 3]   # Usar fundamental, 2da y 3ra armónica
 CCA_N_COMPONENTS = 1        # Componente principal
+
+# CAR
+APPLY_CAR = True
  
 # ==========================================
 # PRE-COMPUTAR FILTROS (como en notebook)
@@ -86,8 +89,10 @@ class EEGProcessor:
         eeg_selected = eeg_notch[self.used_channels, :]
         
         # Paso 4: CAR - restar media de todos los canales
-        eeg_car = self.apply_car(eeg_selected)
-        
+        if APPLY_CAR:
+            eeg_car = self.apply_car(eeg_selected)
+        else:
+            eeg_car = eeg_selected.copy()        
         return eeg_car
     
     def apply_car(self, eeg_data):
@@ -96,8 +101,7 @@ class EEGProcessor:
         eeg_data: shape (n_channels, n_samples)
         """
         mean_ref = np.mean(eeg_data, axis=0, keepdims=True)
-        #return eeg_data - mean_ref
-        return eeg_data
+        return eeg_data - mean_ref
     
     def generate_references(self, frequency, n_samples):
         """
