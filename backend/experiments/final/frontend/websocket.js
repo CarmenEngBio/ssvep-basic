@@ -119,6 +119,7 @@ function handleBlockResult(msg) {
   //stopCountdown();
   
   var cell = document.getElementById('cell-' + msg.cell_id);
+  if (cell) cell.classList.remove('selected'); 
   
   if (msg.correct) {
     // ✅ CORRECTO
@@ -129,12 +130,12 @@ function handleBlockResult(msg) {
     );
   } else {
     // ❌ INCORRECTO
-    if (cell) cell.classList.add('error');
-    var detected = msg.detected_freq ? msg.detected_freq.toFixed(2) : '?';
-    showMessage(
-      '❌ ' + msg.emoji + ' ' + msg.label + ' - Detectó ' + detected + 'Hz (corr: ' + msg.correlation.toFixed(4) + ')',
-      'error'
-    );
+   // if (cell) cell.classList.add('error');
+    //var detected = msg.detected_freq ? msg.detected_freq.toFixed(2) : '?';
+    //showMessage(
+    //  '❌ ' + msg.emoji + ' ' + msg.label + ' - Detectó ' + detected + 'Hz (corr: ' + msg.correlation.toFixed(4) + ')',
+    //  'error'
+    //);
   }
   
   console.log('[All correlations]', msg.all_corrs);
