@@ -14,7 +14,7 @@ USED_CHANNELS = [4, 5, 6, 7]  # P7, P8, O1, O2 (índices 0-based)
 CHANNEL_NAMES = ["P7", "P8", "O1", "O2"]
  
 # --- Buffer inicial ---
-WINDOW_SEC = 3
+WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
 
 TARGET_CELL = 4
