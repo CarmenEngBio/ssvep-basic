@@ -17,7 +17,7 @@ CHANNEL_NAMES = ["P7", "P8", "O1", "O2"]
 WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
 
-TARGET_CELL = 1
+TARGET_CELL = 4
  
 # --- Celdas vitales y frecuencias ---
 CELLS = {
