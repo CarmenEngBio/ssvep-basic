@@ -2,33 +2,33 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <title>SSVEP BCI — Experimento 3: 4 Celdas en Cruz</title>
+  <title>SSVEP BCI — Experiment 3: 4 Cells in Cross</title>
   <link rel="stylesheet" href="./assets/css/styles_exp3.css"/>
 </head>
 <body>
 
-  <h1>SSVEP BCI — Experimento 3: 4 Celdas en Cruz</h1>
+  <h1>SSVEP BCI — Experiment 3: 4 Cells in a Cross</h1>
 
-  <div id="status">● Conectando con el servidor...</div>
+  <div id="status">● Connected to the server...</div>
 
-  <p id="instructions">
+  <!--<p id="instructions">
     Enfoca la vista en el centro (punto de fijación). Las 4 celdas parpadearán 
     simultáneamente a diferentes frecuencias. Mantén la atención relajada durante 
     toda la prueba.
-  </p>
+  </p>-->
 
   <!-- Cruz de 4 celdas con emojis (grid layout) -->
   <div id="stim-wrap">
     <!-- Celda superior (Frío) -->
     <div class="key" id="key-top" data-key="top" data-emoji="❄️" data-freq="8.57">
       <div class="emoji">❄️</div>
-      <div class="label">Frío</div>
+      <div class="label">Cold</div>
     </div>
 
     <!-- Celda izquierda (Calor) -->
     <div class="key" id="key-left" data-key="left" data-emoji="🔥" data-freq="10.0">
       <div class="emoji">🔥</div>
-      <div class="label">Calor</div>
+      <div class="label">Warm</div>
     </div>
 
     <!-- Punto de fijación central -->
@@ -37,19 +37,19 @@
     <!-- Celda derecha (Dolor) -->
     <div class="key" id="key-right" data-key="right" data-emoji="😣" data-freq="12.0">
       <div class="emoji">😣</div>
-      <div class="label">Dolor</div>
+      <div class="label">Pain</div>
     </div>
 
     <!-- Celda inferior (Cansado) -->
     <div class="key" id="key-bottom" data-key="bottom" data-emoji="😴" data-freq="15.0">
       <div class="emoji">😴</div>
-      <div class="label">Cansado</div>
+      <div class="label">Tired</div>
     </div>
   </div>
 
   <!-- Panel de control -->
   <div id="test-panel">
-    <button id="btn-test" onclick="startTest()">Iniciar Experimento 3 (160 s)</button>
+    <button id="btn-test" onclick="startTest()">Start Test (160 s)</button>
     <div id="timer"></div>
   </div>
 

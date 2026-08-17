@@ -1,7 +1,7 @@
 function setConnectionStatus(state) {
   var el = document.getElementById('status');
   if (state === 'connected') {
-    el.textContent = '● Cyton conectada';
+    el.textContent = '● Connected Cyton';
     el.classList.add('ok');
   } else {
     el.textContent = '● Sin conexión — reintentando...';
@@ -14,7 +14,7 @@ var countdownInterval = null;
 function startCountdown(seconds) {
   var timer = document.getElementById('timer');
   var remaining = seconds;
-  //timer.textContent = 'Grabando... ' + remaining + ' s restantes';
+  //timer.textContent = 'Recording... ' + remaining + ' s restantes';
 
   if (countdownInterval) clearInterval(countdownInterval);
   countdownInterval = setInterval(function() {
@@ -41,6 +41,6 @@ function handleRecordingMessage(msg) {
   if (msg.type === 'recording_stopped') {
     btn.disabled = false;
     if (countdownInterval) clearInterval(countdownInterval);
-    document.getElementById('timer').textContent = '✓ Grabación finalizada y guardada.';
+    document.getElementById('timer').textContent = '✓ Finished and saved recording';
   }
 }
