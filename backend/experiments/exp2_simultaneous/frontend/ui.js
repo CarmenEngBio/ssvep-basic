@@ -1,7 +1,7 @@
 function setConnectionStatus(state) {
   var el = document.getElementById('status');
   if (state === 'connected') {
-    el.textContent = '● Cyton conectada';
+    el.textContent = '● Connected Cyton ';
     el.classList.add('ok');
   } else {
     el.textContent = '● Sin conexión — reintentando...';
