@@ -23,7 +23,7 @@ function startCountdown(seconds) {
       clearInterval(countdownInterval);
       timer.textContent = 'Finalizando experimento...';
     } else {
-      timer.textContent = 'Grabando... ' + remaining + ' s restantes';
+      timer.textContent = 'Recording... ' + remaining + ' s remaining';
     }
   }, 1000);
 }
@@ -42,7 +42,7 @@ function handleRecordingMessage(msg) {
     // Solo informativo: apoyo/cruce con tu alarma del móvil, el estímulo
     // (las 4 celdas parpadeando) no cambia.
     document.getElementById('phase-label').textContent =
-      'Según el reloj interno, ahora tocaría mirar: celda ' + msg.cell + ' (' + msg.freq + ' Hz)';
+      'According to the timer the user must gaze at: cell ' + msg.cell + ' (' + msg.freq + ' Hz)';
   }
 
   if (msg.type === 'recording_stopped') {
