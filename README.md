@@ -1,66 +1,48 @@
-# Single-Cell Test — SSVEP BCI
+# Single-Cell Test - SSVEP BCI
 
-Proyecto independiente, abstraído de `ssvep-bci`, para validar la respuesta SSVEP
-y la calidad de señal cruda **antes** de depurar fallos en el sistema completo
-multi-frecuencia.
+First trials to validate the SSVEP stimulation response as well as the signal quality for certain
+frequency values before implementing and debugging a built real time system and its performance.
 
-## Qué incluye
+- Just one flickering cell with a dark fixated digit placed at the center is shown (8x8 cm size).
+- Automatic recording is saved during 40s, with the same `.txt` format compatible with OpenBCI GUI.
+- As this approach comprehends the offline implementation, the preprocessign, filtering and classification steps are done at
+Jupyter Notebooks. 
+- The tested frequency values were obtained from the division resulting from the laptop refresh rate (60 Hz) and integers (4-7)
 
-- **Incluye**: una sola celda parpadeante (dígito "1" fijo en negro, celda
-  completa 8×8 cm alternando blanco/negro a 8.57 Hz) + grabación automática
-  de 40 s de señal cruda, guardada en el mismo formato `.txt` compatible con
-  OpenBCI GUI que ya usa `recorder.py` en el proyecto principal — lista para
-  el mismo flujo de análisis en Jupyter (Welch PSD).
-- **No incluye**: clasificación CCA, voting, cooldown, ni modo DEMO. El
-  backend solo se conecta a la placa Cyton real. La idea es aislar si la
-  respuesta SSVEP y la señal del electrodo están presentes, sin la
-  complejidad añadida del teclado de 10 dígitos.
-
-## Estructura
+## Structure
 
 ```
-single-cell-test/
+ssvep-basic/
 ├── README.md
 ├── backend/
-│   ├── config.py      # SERIAL_PORT, STIM_FREQ (8.57 Hz), RECORD_SEC (40 s)
-│   ├── eegsource.py    # Solo CytonEEG (sin DemoEEG ni MODE)
-│   ├── recorder.py     # Mismo grabador formato-OpenBCI-GUI del proyecto principal
-│   └── server.py       # Handler WS: start_recording → auto-stop a los 40 s
+│   ├── config.py      # SERIAL_PORT, FREQ (8.57 Hz), RECORD_SEC (40 s)
+│   ├── eegsource.py    # Connected through CytonEEG
+│   ├── recorder.py     # Saves raw EEG data in a .txt file
+│   └── server.py       # Handler of the WebSocket and enables recording till 40s
 └── frontend/
     ├── index.html
-    └── assets/
-        ├── css/styles.css
+    └── assets/ 
+        ├── css/styles.css   # Configures web User Interface appearance
         └── js/
-            ├── flicker.js     # Mismo motor de flicker del proyecto principal
-            ├── websocket.js
-            ├── ui.js
-            └── app.js
+            ├── flicker.js     # Cell flickering engine with white color
+            ├── websocket.js   # Manages the messages exchanged
+            ├── ui.js          # Links the css with the messages exchanged through the WebSocket
+            └── app.js  # Connects the flickering and the User Interface configuration with the WS
 ```
 
-## Cómo ejecutarlo
+## How to execute it
 
-1. Edita `backend/config.py` y pon el `SERIAL_PORT` correcto para tu Cyton.
-2. Instala dependencias (mismas que el backend principal, sin scikit-learn
-   porque aquí no hay CCA):
+1. Edit `backend/config.py` and indicate the correct `SERIAL_PORT` for the Cyton.
+2. Install the dependencies required to launch this application:
    ```
    pip install websockets numpy brainflow
    ```
-3. Arranca el servidor:
+3. Launch the server:
    ```
    python backend/server.py
    ```
-4. Haz doble clic en `frontend/index.html` para abrirlo en el navegador
-   (sin servidor HTTP local, igual que el proyecto principal — por eso
-   `websocket.js` sigue usando `<script src="">` en vez de `import`).
-5. Cuando aparezca "● Cyton conectada", pulsa **Iniciar prueba (40 s)** y
-   enfoca la vista en el "1" mientras parpadea. La grabación se detiene y
-   guarda sola a los 40 s — no hace falta pulsar nada más.
-6. El fichero `.txt` aparece en `backend/recordings/`, listo para cargarlo
-   en el mismo notebook que ya usas, y comprobar si aparece un pico de
-   potencia en 8.57 Hz (y sus armónicos) en P7/P8/O1/O2.
+4. Then it is double clicked the `frontend/index.html` to open the web UI 
+5. When the "● Cyton connected" appears, it is possible to press **Begin test (40 s)** and
+   user must focus their sight to the desired number while it flickers. After 40s the recording is automatically saved. 
+6. The file `.txt` will appear at `backend/recordings/` which can processed at Jupyter Notebooks to analyze the system's operation.
 
-
-## Nota
-
-Los valores numéricos empleados son el resultado de los cálculos de números 
-enteros divididos respecto a la tasa de refresco del PC equivalente a 60 Hz. 

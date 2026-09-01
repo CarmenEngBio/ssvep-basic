@@ -10,7 +10,7 @@ import time
 import numpy as np
 import websockets
 
-from config    import STIM_LABEL, STIM_FREQ, RECORD_SEC, WINDOW_SEC, WINDOW
+from config    import LABEL, FREQ, RECORD_SEC, WINDOW_SEC, WINDOW
 from eegsource import CytonEEG
 from recorder  import EEGRecorder
 
@@ -86,7 +86,7 @@ async def handler(ws, source):
 async def main():
     print("=" * 50)
     print("  SSVEP BCI — Fase de Testeo (celda única)")
-    print(f"  Estímulo: '{STIM_LABEL}' a {STIM_FREQ} Hz")
+    print(f"  Estímulo: '{LABEL}' a {FREQ} Hz")
     print(f"  Grabación automática: {RECORD_SEC}s")
     print("  Solo conexión con hardware Cyton (sin modo DEMO).")
     print("  Abre el fichero index.html en el navegador (doble clic).")

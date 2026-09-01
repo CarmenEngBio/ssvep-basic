@@ -19,17 +19,17 @@ WINDOW_SEC = 4
 WINDOW     = FS * WINDOW_SEC
 
 # --- Estímulo único ---
-STIM_LABEL = "1"
-STIM_FREQ  = 8.57         # Hz
+LABEL = "1"
+FREQ  = 8.57         # Hz
 
-#STIM_LABEL = "2"
-#STIM_FREQ  = 10
+#LABEL = "2"
+#FREQ  = 10
 
-#STIM_LABEL = "3"
-#STIM_FREQ  = 12
+#LABEL = "3"
+#FREQ  = 12
 
-#STIM_LABEL = "4"
-#STIM_FREQ  = 15
+#LABEL = "4"
+#FREQ  = 15
 
 # --- Grabación automática ---
 RECORD_SEC = 40
