@@ -42,8 +42,8 @@ h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  font-size: 2.4rem;
-  font-weight: 700;
+  font-size: 0.4rem;
+  font-weight: 200;
   color: #000;
   user-select: none;
 }
