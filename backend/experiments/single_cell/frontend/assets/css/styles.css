@@ -1,0 +1,74 @@
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: #1a1a1a;
+  color: #ccc;
+  font-family: 'Segoe UI', sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  gap: 1.8rem;
+}
+
+h1 { font-size: 1.1rem; color: #aaa; letter-spacing: .1em; font-weight: 400; }
+
+#status { font-size: .8rem; color: #888; transition: color .3s; }
+#status.ok { color: #6abf69; }
+
+#instructions { font-size: .8rem; color: #666; text-align: center; max-width: 320px; }
+
+#stim-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Celda única — 8x8 cm físicos, tal como se especifica para esta prueba */
+.key {
+  width: 8cm;
+  height: 8cm;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 4rem;
+  font-weight: 700;
+  color: #000;           /* el "1" se queda fijo en negro, no cambia con on/off */
+  user-select: none;
+}
+
+/* BLINKING — a diferencia del proyecto principal (Dehais et al. 2022, flicker
+   solo en el texto para reducir fatiga visual en uso repetido), aquí parpadea
+   la celda COMPLETA en blanco/negro a contraste máximo. Es deliberado para
+   esta prueba de validación: el flicker de campo completo maximiza la
+   amplitud de la respuesta SSVEP (mismo principio que la celda/LED completa
+   de Cheng et al. 2002), priorizando la detectabilidad inequívoca en el PSD
+   sobre el confort visual — aquí no hay selección repetida de dígitos. */
+.key.on  { background: #ffffff; }
+.key.off { background: #000000; }
+
+#test-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .6rem;
+}
+
+#test-panel button {
+  background: #2e2e2e;
+  border: 1px solid #444;
+  border-radius: 6px;
+  color: #ccc;
+  padding: .6rem 1.2rem;
+  font-size: .9rem;
+  cursor: pointer;
+  transition: background .2s, border-color .2s;
+}
+#test-panel button:hover:not(:disabled) { background: #383838; border-color: #666; }
+#test-panel button:disabled { opacity: .3; cursor: default; }
+
+#timer { font-size: .8rem; color: #e6a817; min-height: 1.2em; }
+
+#rec-filename { font-size: .65rem; color: #444; word-break: break-all; }
