@@ -1,4 +1,4 @@
-/* bci_styles.css — Estilos para BCI Asistencial SSVEP */
+/* BCI styles.css */
  
 * {
   box-sizing: border-box;
@@ -36,7 +36,7 @@ h1 {
   color: #6abf69;
 }
  
-/* KEYPAD — 4 celdas en fila */
+/* KEYPAD */
 #keypad {
   display: flex;
   gap: 1.5cm;
@@ -44,7 +44,6 @@ h1 {
   flex-wrap: nowrap;
 }
  
-/* CELDAS GRANDES */
 .key {
   width: 8cm;
   height: 8cm;
@@ -85,7 +84,7 @@ h1 {
   color: #666;
 }
  
-/* SELECCIONADA */
+/* Selected cell */
 .key.selected {
   background: linear-gradient(135deg, #34d399 0%, #10b981 100%);
   color: #ffffff;
@@ -99,7 +98,6 @@ h1 {
   text-align: center;
 }
  
-/* PANEL DE CONTROL */
 #test-panel {
   display: flex;
   flex-direction: column;
@@ -143,28 +141,4 @@ h1 {
   word-break: break-all;
   max-width: 600px;
   text-align: center;
-}
- 
-/* RESPONSIVE */
-@media (max-width: 768px) {
-  #keypad {
-    gap: 1.5cm;
-  }
- 
-  .key {
-    width: 7cm;
-    height: 7cm;
-  }
- 
-  .key .emoji {
-    font-size: 2rem;
-  }
- 
-  .key .label {
-    font-size: 0.7rem;
-  }
- 
-  h1 {
-    font-size: 1.3rem;
-  }
 }

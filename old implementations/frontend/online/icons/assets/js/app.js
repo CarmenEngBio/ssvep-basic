@@ -1,73 +1,60 @@
-// bci_app.js — Inicializador principal del BCI
+// bci_app.js 
 
- 
-console.log('[BCI] Cargando aplicación...');
- 
-// ✓ connect() se llama SOLO en websocket.js, NO aquí
- 
+console.log('[BCI] Loading application...');
+
 window.addEventListener('load', function() {
-  console.log('[BCI] DOM cargado, inicializando...');
+  console.log('[BCI] DOM loaded, initialising...');
   
-  // Inicializar flickering
   initFlicker();
-  console.log('[BCI] Flickering iniciado');
+  console.log('[BCI] Flickering launched');
   
-  // ✓ NO llamar a connect() aquí - websocket.js ya lo hace
 });
  
-// ==========================================
-// FUNCIÓN: Iniciar Sesión
-// ==========================================
+
 function startTest() {
-  console.log('[StartTest] Sesión iniciada');
+  console.log('[StartTest] Initialised session');
   
   if (!socket) {
-    alert('⚠️ No hay conexión con el servidor');
+    alert('No connection with server');
     return;
   }
   
   if (socket.readyState !== WebSocket.OPEN) {
-    alert('⚠️ Desconectado del servidor');
+    alert('Disconnected from server');
     return;
   }
   
-  // Enviar mensaje
+  // Send message
   socket.send(JSON.stringify({
     type: "start_session",
     label: "bci_vital_" + new Date().getTime()
   }));
   
-  // Desactivar botón
   document.getElementById('btn-test').disabled = true;
-  console.log('[StartTest] Botón desactivado');
+  console.log('[StartTest] Disables start button once begins');
 }
  
-// ==========================================
-// FUNCIÓN: Detener Sesión (NUEVO)
-// ==========================================
+
 function stopTest() {
-  console.log('[StopTest] Sesión detenida');
+  console.log('[StopTest] Session ended');
   
   if (!socket) {
-    alert('⚠️ No hay conexión con el servidor');
+    alert('No connection with server');
     return;
   }
   
   if (socket.readyState !== WebSocket.OPEN) {
-    alert('⚠️ Desconectado del servidor');
+    alert('Lost connection with server');
     return;
   }
   
-  // Enviar mensaje de parada
   socket.send(JSON.stringify({
     type: "stop_session"
   }));
   
-  // Reactivar botón de inicio
   document.getElementById('btn-test').disabled = false;
-  console.log('[StopTest] Botón reactivado');
+  console.log('[StopTest] Start button active again');
 }
  
-// Hacer funciones globales
 window.startTest = startTest;
 window.stopTest = stopTest;

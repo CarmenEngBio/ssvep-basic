@@ -1,39 +1,38 @@
-// bci_ui.js — Funciones de interfaz del BCI
- 
-// Inicialmente, desactivar el botón de detener
+// BCI ui.js 
 
-console.log('[UI] Inicializando interfaz...');
+
+console.log('[UI] Initialising web interface ...');
 
 function setConnectionStatus(state) {
   var el = document.getElementById('status');
   if (!el) {
-    console.warn('[UI] Elemento status no encontrado');
+    console.warn('[UI] Element status not found ');
     return;
   }
   
   if (state === 'connected') {
-    el.textContent = '● Conectado al servidor';
+    el.textContent = '● Connected to server';
     el.style.color = '#51cf66';
-    console.log('[UI] Estado: Conectado');
+    console.log('[UI] Status: Connected');
   } else {
-    el.textContent = '● Desconectado - reintentando...';
+    el.textContent = '● Disconnected - reattempting ...';
     el.style.color = '#ff6b6b';
-    console.log('[UI] Estado: Desconectado');
+    console.log('[UI] Status: Disconnected');
   }
 }
 
 function clearCellSelection() {
-  var cells = document.querySelectorAll('.key');  // ✅ CORRECTO
+  var cells = document.querySelectorAll('.key');  // CORRECT
   cells.forEach(cell => {
     cell.classList.remove('selected');
   });
-  console.log('[UI] Celdas deseleccionadas');
+  console.log('[UI] Disabled cells selection');
 }
 
 function showMessage(text, type) {
-  var feedback = document.getElementById('phase-label');  // ✅ CORRECTO
+  var feedback = document.getElementById('phase-label');  // CORRECT
   if (!feedback) {
-    console.warn('[UI] Elemento phase-label no encontrado');
+    console.warn('[UI] Element not found');
     return;
   }
   
@@ -47,7 +46,7 @@ function showMessage(text, type) {
     feedback.style.color = '#aaa';
   }
   
-  console.log('[UI] Mensaje:', text);
+  console.log('[UI] Message:', text);
 }
 
 function updateSignalQuality(quality) {
@@ -59,12 +58,12 @@ var countdownInterval = null;
 function startCountdown(seconds) {
   var timer = document.getElementById('timer');
   if (!timer) {
-    console.warn('[UI] Elemento timer no encontrado');
+    console.warn('[UI] Timer element not found');
     return;
   }
   
   var remaining = seconds;
-  timer.textContent = 'Grabando... ' + remaining + ' s';
+  timer.textContent = 'Recording... ' + remaining + ' s';
 
   if (countdownInterval) clearInterval(countdownInterval);
   
@@ -72,9 +71,9 @@ function startCountdown(seconds) {
     remaining--;
     if (remaining <= 0) {
       clearInterval(countdownInterval);
-      timer.textContent = 'Finalizando...';
+      timer.textContent = 'Finishing...';
     } else {
-      timer.textContent = 'Grabando... ' + remaining + ' s';
+      timer.textContent = 'Recording... ' + remaining + ' s';
     }
   }, 1000);
 }

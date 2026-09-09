@@ -1,4 +1,4 @@
-// bci_websocket.js — Comunicación WebSocket con servidor BCI
+// BCI websocket.js
  
 
 var WS_URL = 'ws://localhost:8765';
@@ -6,16 +6,16 @@ var RETRY_MS = 2000;
 var socket = null;
  
 function connect() {
-  console.log('[WebSocket] Intentando conectar a ' + WS_URL);
+  console.log('[WebSocket] Attempting to connect to ' + WS_URL);
   socket = new WebSocket(WS_URL);
  
   socket.onopen = function() {
-    console.log('[WebSocket] ✓ Conectado');
+    console.log('[WebSocket] ✓ Connected');
     setConnectionStatus('connected');
   };
  
   socket.onclose = function() {
-    console.log('[WebSocket] Desconectado, reintentando en ' + RETRY_MS + 'ms...');
+    console.log('[WebSocket] Disconnected, reattempting in ' + RETRY_MS + 'ms...');
     setConnectionStatus('disconnected');
     socket = null;
     setTimeout(connect, RETRY_MS);
@@ -29,7 +29,7 @@ function connect() {
   socket.onmessage = function(e) {
     try {
       var msg = JSON.parse(e.data);
-      console.log('[WebSocket] Mensaje:', msg.type, msg);
+      console.log('[WebSocket] Message:', msg.type, msg);
  
       switch (msg.type) {
         case 'session_started':
@@ -52,45 +52,41 @@ function connect() {
           break;
       }
     } catch (err) {
-      console.error('[WebSocket] Error parseando mensaje:', err);
+      console.error('[WebSocket] Error message:', err);
     }
   };
 }
  
-// Handlers para mensajes del servidor
  
 function handleSessionStarted(msg) {
-  console.log('[Session Started] Archivo:', msg.file);
-  showMessage('Sesión iniciada - Grabando...', 'success');
-  document.getElementById('rec-filename').textContent = 'Grabando: ' + msg.file;
+  console.log('[Session Started] File:', msg.file);
+  showMessage('Started session - Recording...', 'success');
+  document.getElementById('rec-filename').textContent = 'Recording: ' + msg.file;
   
-  // ✓ Mostrar botón detener, esconder iniciar
   document.getElementById('btn-test').style.display = 'none';
   document.getElementById('btn-stop').style.display = 'block';
 }
  
 function handleTrialStarted(msg) {
-  console.log('[Trial Started] ID:', msg.trial_id, 'Duración:', msg.duration, 's');
+  console.log('[Trial Started] ID:', msg.trial_id, 'Timing:', msg.duration, 's');
   startCountdown(msg.duration);
-  showMessage('Trial iniciado, mirando...', 'success');
+  showMessage('Trial initialised, looking at...', 'success');
 }
  
 function handleSelection(msg) {
   console.log('[Selection] ✓', msg);
  
-  // Marcar celda
   var cell = document.getElementById('cell-' + msg.cell_id);
   if (cell) {
     cell.classList.add('selected');
   }
  
-  // Mostrar feedback
-  showMessage('✓ ' + msg.emoji + ' ' + msg.label + ' - Correlación: ' + msg.correlation.toFixed(4), 'success');
+  showMessage('✓ ' + msg.emoji + ' ' + msg.label + ' - Correlation: ' + msg.correlation.toFixed(4), 'success');
 }
  
 function handleNoSelection(msg) {
-  console.log('[No Selection] Correlación:', msg.correlation.toFixed(4));
-  showMessage('✗ No seleccionado (corr: ' + msg.correlation.toFixed(4) + ')', 'error');
+  console.log('[No Selection] Correlation:', msg.correlation.toFixed(4));
+  showMessage('✗ Not selected (corr: ' + msg.correlation.toFixed(4) + ')', 'error');
 }
  
 function handleSessionEnded(msg) {
@@ -98,12 +94,11 @@ function handleSessionEnded(msg) {
   stopCountdown();
   clearCellSelection();
   
-  // ✓ Esconder botón detener, mostrar iniciar
   document.getElementById('btn-test').style.display = 'block';
   document.getElementById('btn-stop').style.display = 'none';
   document.getElementById('btn-test').disabled = false;
   
-  showMessage('Sesión finalizada', 'success');
+  showMessage('Finished Session', 'success');
 }
  
 function handleStatus(msg) {
@@ -112,9 +107,7 @@ function handleStatus(msg) {
   }
 }
  
-// Conectar al cargar SOLO una vez (desde aquí, no desde app.js)
 window.addEventListener('load', function() {
-  console.log('[App] DOM cargado, conectando WebSocket...');
-  // PEQUEÑO DELAY para asegurar que todo está listo
+  console.log('[App] DOM loaded, connecting with WebSocket...');
   setTimeout(connect, 100);
 });

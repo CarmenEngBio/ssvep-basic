@@ -37,7 +37,7 @@ function initFlicker() {
         k.elapsed -= k.period;
         k.state = !k.state;
 
-        // Aplicar clases CSS
+        // CSS
         if (k.state) {
           k.el.classList.add('on');
           k.el.classList.remove('off');

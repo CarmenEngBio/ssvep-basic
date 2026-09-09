@@ -1,4 +1,4 @@
-# debug signal quality module 
+# utility_debug_tool is used as a signal quality module 
 # Module used for signal quality analysis with files previously recorded
  
 import numpy as np
@@ -278,8 +278,8 @@ def main(filepath):
     print("   - Manipulate the CAR")
     print()
     print("5. Desactivate CAR temporalily:")
-    print("   - Observe if there is better correlación")
-    print("   - Analize if CAR improves/worsens the results with the configured classification")
+    print("   - Observe if there is better correlation")
+    print("   - Analyze if CAR improves/worsens the results with the configured classification")
     print()
     print("="*80 + "\n")
  

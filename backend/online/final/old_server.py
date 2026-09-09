@@ -1,5 +1,6 @@
-# BCI server.py - Online classification
-# User gazes at each cell sequentially from left to right and classification is made each 40s
+# BCI old_server.py - Uses experiment 2 but with ONLINE performance
+# Classification occurs each 40s
+# At the end of the recording it is shown the classification result of how many cells were sequentially detected
  
 import asyncio
 import json
@@ -15,12 +16,11 @@ from processing import EEGProcessor
 recorder = EEGRecorder()
 processor = EEGProcessor()
  
-# 160 s
 TOTAL_SEC = TRIAL_SEC * len(CELLS)
  
  
 class BCIBlock:
-    # Session for one block consisting of 40s looking at one sigle cell
+    # Each block represents 40s gazing at one cell.
     
     def __init__(self):
         self.trial_data = []
@@ -33,15 +33,16 @@ class BCIBlock:
         self.start_time = None
     
     def add_samples(self, eeg_chunk, timestamps):
-        # Cummulates samples during the recording trial
+        # Accumulates samples or appends them
         self.trial_data.append(eeg_chunk)
         self.trial_timestamps.extend(timestamps)
     
     def has_enough_data(self) -> bool:
-        # Verifies if there are enough samples to process and classify 
+        #Verifies if there are enough samples at least 2s
         return len(self.trial_timestamps) > FS * 2
     
     def classify(self, target_freq) -> dict:
+        # Classification of target freq against frequencies
         if not self.has_enough_data():
             return {"freq": None, "corr": 0.0, "correct": False}
         
@@ -52,7 +53,7 @@ class BCIBlock:
         frequencies = [CELLS[i]["freq"] for i in sorted(CELLS.keys())]
         best_freq, best_corr, all_corrs = processor.classify(X_processed, frequencies)
         
-        is_correct = abs(best_freq - target_freq) < 0.5
+        is_correct = abs(best_freq - target_freq) < 0.5 # 0.5 Hz margin
         
         return {
             "freq": best_freq,
@@ -66,7 +67,7 @@ bci_block = BCIBlock()
  
  
 async def run_blocks(ws, source):
-    # Iterates all cells blocks, each one of 40s and classifies each one
+    # Iterates 4 blocks of 40s and classifies each one
     results = []
     
     for cell_id in sorted(CELLS.keys()):
@@ -75,9 +76,9 @@ async def run_blocks(ws, source):
         emoji = cell_info["emoji"]
         label = cell_info["label"]
         
-        print(f"\n[Block {cell_id}] User must gaze at: {emoji} {label} ({freq} Hz) during 40s...")
+        print(f"\n[Block {cell_id}] User must gaze at: {emoji} {label} ({freq} Hz) during 60s...")
         
-        # Message sent to the frontend
+        # messages to frontend
         await ws.send(json.dumps({
             "type": "block_started",
             "cell_id": cell_id,
@@ -87,16 +88,16 @@ async def run_blocks(ws, source):
             "duration": TRIAL_SEC,
         }))
         
-        # Indication to file
+        # For .txt file
         recorder.set_marker(cell_id)
         
-        # 40 seconds are accumulated
+        # 40 s are gathered
         bci_block.reset()
         bci_block.start_time = time.time()
         elapsed = 0.0
         
         while elapsed < TRIAL_SEC:
-            raw_eeg = source.get_window()
+            # raw_eeg = source.get_window()
             new_eeg, new_ts = source.get_new_samples()
             
             if new_eeg.shape[1] > 0 and recorder.is_recording:
@@ -106,7 +107,7 @@ async def run_blocks(ws, source):
             elapsed = time.time() - bci_block.start_time
             await asyncio.sleep(0.1)
         
-        # Block is classified
+        # One block is classified
         result = bci_block.classify(freq)
         results.append({
             "cell_id": cell_id,
@@ -118,11 +119,12 @@ async def run_blocks(ws, source):
             "all_corrs": result["all_corrs"],
         })
         
+        # Results are sent to the frontend and displaced through the server console 
         if result["correct"]:
-            status = "CORRECT"
+            status = "✅ CORRECT"
             color = "green"
         else:
-            status = f"INCORRECT (detected {result['freq']:.2f}Hz)"
+            status = f"❌ INCORRECT (detected {result['freq']:.2f}Hz)"
             color = "red"
         
         print(f"[Result] {emoji} {label}: Corr={result['corr']:.4f} — {status}")
@@ -139,10 +141,12 @@ async def run_blocks(ws, source):
             "status": status,
         }))
         
-        await asyncio.sleep(0.5)  # Pause between cell blocks
+        await asyncio.sleep(0.5)  # Blocks pause
     
+    # End of recording
     recorder.stop()
     
+    # Final summary
     correct_count = sum(1 for r in results if r["correct"])
     accuracy = (correct_count / len(results)) * 100 if results else 0
     
@@ -168,8 +172,10 @@ async def handler(ws, source):
                 msg = json.loads(raw)
  
                 if msg.get("type") == "start_session" and not recorder.is_recording:
+                    # Releases BrainFlow buffer
                     source.get_new_samples()
  
+                    # Begins recording session
                     fname = recorder.start("bci_exp2_online")
                     await ws.send(json.dumps({
                         "type": "session_started",
@@ -177,23 +183,15 @@ async def handler(ws, source):
                         "duration": TOTAL_SEC,
                     }))
                     
-                    # Execution for all blocks (four cells)
+                    # Executing for 4 blocks which are the 4 cells
                     block_task = asyncio.create_task(run_blocks(ws, source))
  
             except (asyncio.TimeoutError, json.JSONDecodeError):
                 pass
  
-            # Signal quality is assesed continuosly 
-            raw_eeg = source.get_window()
-            if raw_eeg is not None:
-                occ_var = float(np.mean(np.var(raw_eeg[4:8], axis=1)))
-            else:
-                occ_var = 0.0
- 
             await ws.send(json.dumps({
                 "type": "status",
                 "recording": recorder.is_recording,
-                "signal_quality": round(occ_var, 2),
             }))
  
             await asyncio.sleep(0.5)
@@ -209,22 +207,22 @@ async def handler(ws, source):
  
 async def main():
     print("=" * 70)
-    print("  Assistential SSVEP Online BCI ")
+    print("  SSVEP Online Assistive BCI ")
     print("=" * 70)
-    print("  Structure: 4 blocks of 40s (user gazes at each cell sequentialy)")
-    print("  Classification: at the end of each block ")
+    print("  Structure: 4 blocks of 40s for each cell ")
+    print("  Classification: at the end of each registered data cell")
     print("  Frequencies:")
     for cid, info in sorted(CELLS.items()):
         print(f"    {cid}. {info['emoji']} {info['label']:20} → {info['freq']} Hz")
-    print(f"\n  Timing: {TOTAL_SEC}s")
-    print("  Connection with Cyton hardware ")
+    print(f"\n  Total duration: {TOTAL_SEC}s")
+    print("  Connected to Cyton hardware ")
     print("=" * 70)
  
     source = CytonEEG()
  
     print(f"  Waiting {WINDOW_SEC}s to fill the EEG buffer ...")
     await asyncio.sleep(WINDOW_SEC)
-    print("  Ready! Open the browser and select 'Begin Session'.\n")
+    print("  Ready! Open the browser and click to 'Start Session' .\n")
  
     try:
         async with websockets.serve(

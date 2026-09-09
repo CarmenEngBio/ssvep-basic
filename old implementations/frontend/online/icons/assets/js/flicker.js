@@ -1,27 +1,26 @@
-// bci_flicker.js — Motor de flickering para las 4 celdas vitales
+// bci_flicker.js 
  
 function initFlicker() {
-  const flickerCells = Array.from(document.querySelectorAll('.key[data-freq]'))  // ✅ CAMBIAR A .key
+  const flickerCells = Array.from(document.querySelectorAll('.key[data-freq]'))  
     .filter(el => parseFloat(el.dataset.freq) > 0)
     .map(el => ({
       el: el,
       freq: parseFloat(el.dataset.freq),
-      period: 1000 / (parseFloat(el.dataset.freq) * 2),  // ms por semi-ciclo
+      period: 1000 / (parseFloat(el.dataset.freq) * 2),  // ms per half-cicle
       elapsed: 0,
-      state: false,  // false = off (negro), true = on (blanco)
+      state: false,  
     }));
 
-  console.log('[Flicker] Inicializado con ' + flickerCells.length + ' celdas');
+  console.log('[Flicker] Initialising with ' + flickerCells.length + ' cells');
 
   if (flickerCells.length === 0) {
-    console.error('[Flicker] ¡¡ERROR!! No se encontraron celdas con clase .key');
+    console.error('[Flicker] Cells not found with that key');
     return;
   }
 
-  // Mostrar frecuencias
   flickerCells.forEach(c => {
     console.log('[Flicker] ' + c.el.getAttribute('id') + 
-                ' → ' + c.freq + ' Hz (período: ' + c.period.toFixed(1) + ' ms)');
+                ' → ' + c.freq + ' Hz (period: ' + c.period.toFixed(1) + ' ms)');
   });
 
   let lastT = null;
@@ -38,7 +37,6 @@ function initFlicker() {
         k.elapsed -= k.period;
         k.state = !k.state;
 
-        // Aplicar clases CSS
         if (k.state) {
           k.el.classList.add('on');
           k.el.classList.remove('off');
@@ -52,12 +50,11 @@ function initFlicker() {
     requestAnimationFrame(tick);
   }
 
-  // Iniciar el loop de animación
+  // Flicker loop is launched
   requestAnimationFrame(tick);
 }
 
-// Inicializar al cargar
 window.addEventListener('load', function() {
-  console.log('[Flicker] DOM loaded, iniciando flickering...');
+  console.log('[Flicker] DOM loaded, starting flickering engine...');
   setTimeout(initFlicker, 100);
 });
