@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>SSVEP BCI - Experiment 3: 4 Cells in Cross</title>
+  <link rel="stylesheet" href="./assets/css/styles_exp3.css"/>
+</head>
+<body>
+
+  <h1>SSVEP BCI - Experiment 3: 4 Cells in a Cross</h1>
+
+  <div id="status">● Connected to the server...</div>
+
+  <!--<p id="instructions">
+    You must focus your sight at the center of the screen. Four flickering cells will simultaneously flicker at different rythms.
+    Please maintain your mind relaxed during all recording test. Thank you.
+  </p>-->
+
+  <!-- 4 Cells Cross with emojis -->
+  <div id="stim-wrap">
+    <!-- Upper cell -->
+    <div class="key" id="key-top" data-key="top" data-emoji="❄️" data-freq="8.57">
+      <div class="emoji">❄️</div>
+      <div class="label">Cold</div>
+    </div>
+
+    <!-- Left cell -->
+    <div class="key" id="key-left" data-key="left" data-emoji="🔥" data-freq="10.0">
+      <div class="emoji">🔥</div>
+      <div class="label">Warm</div>
+    </div>
+
+    <div id="fixation"></div>
+
+    <!-- Right cell -->
+    <div class="key" id="key-right" data-key="right" data-emoji="😣" data-freq="12.0">
+      <div class="emoji">😣</div>
+      <div class="label">Pain</div>
+    </div>
+
+    <!-- Bottom cell -->
+    <div class="key" id="key-bottom" data-key="bottom" data-emoji="😴" data-freq="15.0">
+      <div class="emoji">😴</div>
+      <div class="label">Tired</div>
+    </div>
+  </div>
+
+  <div id="test-panel">
+    <button id="btn-test" onclick="startTest()">Start Test (160 s)</button>
+    <div id="timer"></div>
+  </div>
+
+  <div id="rec-filename"></div>
+
+  <script src="./assets/js/ui_exp3.js"></script>
+  <script src="./assets/js/websocket_exp3.js"></script>
+  <script src="./assets/js/flicker_exp3.js"></script>
+  <script src="./assets/js/app_exp3.js"></script>
+
+</body>
+</html>

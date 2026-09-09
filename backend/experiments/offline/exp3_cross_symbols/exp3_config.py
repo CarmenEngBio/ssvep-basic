@@ -20,10 +20,10 @@ WINDOW     = FS * WINDOW_SEC
 # - The screen refresh rate used equal to 60 Hz that defines the range of frequencies
 # - Inclusion of SSVEP frequencies with possibility of later processing their harmonics
 STIM_MATRIX = [
-    {"key": "top",    "label": "❄️ Frío",   "emoji": "❄️", "freq": 8.57},
-    {"key": "left",   "label": "🔥 Calor",   "emoji": "🔥", "freq": 10.0},
-    {"key": "right",  "label": "😣 Dolor",   "emoji": "😣", "freq": 12.0},
-    {"key": "bottom", "label": "😴 Cansado", "emoji": "😴", "freq": 15.0},
+    {"key": "top",    "label": "❄️ Cold",   "emoji": "❄️", "freq": 8.57},
+    {"key": "left",   "label": "🔥 Warm",   "emoji": "🔥", "freq": 10.0},
+    {"key": "right",  "label": "😣 Pain",   "emoji": "😣", "freq": 12.0},
+    {"key": "bottom", "label": "😴 Tired", "emoji": "😴", "freq": 15.0},
 ]
 
 # Automatic recording time 
