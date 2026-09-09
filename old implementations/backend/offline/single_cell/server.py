@@ -28,7 +28,7 @@ async def auto_stop(ws, duration: float):
 #   Handler WebSocket
 async def handler(ws, source):
 
-    print(f"✓ Cliente conectado: {ws.remote_address}")
+    print(f"✓ Client conected: {ws.remote_address}")
     stop_task = None
 
     try:

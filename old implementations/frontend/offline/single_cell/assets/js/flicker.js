@@ -1,5 +1,4 @@
 
-
 function initFlicker() {
   const flickerKeys = Array.from(document.querySelectorAll('.key[data-freq]'))
     .filter(el => parseFloat(el.dataset.freq) > 0)

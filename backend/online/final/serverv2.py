@@ -1,4 +1,4 @@
-# server.py - Definitive structure to implement for online version  
+# BCI server version number 2 - Definitive structure to implement for online version  
 # Classification occurs each 40s recording session where a target is selected.
  
 import asyncio

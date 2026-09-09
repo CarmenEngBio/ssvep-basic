@@ -1,6 +1,6 @@
-# bci_config.py - Assitive SSVEP BCI with 4  vital cells
+# BCI config.py - Assitive SSVEP BCI with 4  vital cells
 # Target icons: Hunger/Thristy, Cold/Warm, Emergencies, Bathroom
-# Frecuencias: 8.57, 10, 12, 15 Hz
+# Frecuencies: 8.57, 10, 12, 15 Hz
  
 # Hardware
 SERIAL_PORT = "COM5"
