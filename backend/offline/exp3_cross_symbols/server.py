@@ -1,4 +1,4 @@
-# exp3_server.py - Experiment 3: 4 Cross-shaped Cells
+# server.py - Experiment 3: 4 Cross-shaped Cells
 # Recording saves automatically the raw entry EEG data and ends when 160s have passed.
 
 import asyncio

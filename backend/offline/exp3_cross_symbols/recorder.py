@@ -1,4 +1,4 @@
-# exp3_recorder.py 
+# recorder.py 
 
 import os
 import re

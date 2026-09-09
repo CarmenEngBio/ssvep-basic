@@ -1,4 +1,4 @@
-# exp3_config.py - Experiment 3: 4 Cells will be changed into a Cross arrangement
+# config.py - Experiment 3: 4 Cells will be changed into a Cross arrangement
 
 # - Upwards icons shown is linked to Cold as ❄️ emoji at a frequency value of 8.57 Hz
 # - Down icon displayed is assigned as Tired as 😴 symbol at a freq value of 15.0 Hz  

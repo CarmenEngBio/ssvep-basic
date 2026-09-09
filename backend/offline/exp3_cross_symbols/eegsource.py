@@ -1,4 +1,4 @@
-# exp3_eegsource.py 
+# eegsource.py 
 
 import numpy as np
 from brainflow.board_shim import BoardShim, BrainFlowInputParams, BoardIds
