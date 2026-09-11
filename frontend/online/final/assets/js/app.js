@@ -1,18 +1,11 @@
 // app.js
- 
-console.log('[BCI] Loading application ...');
- 
-window.addEventListener('load', function() {
-  console.log('[BCI] DOM loaded, initialising ...');
   
+window.addEventListener('load', function() {
   initFlicker();
-  console.log('[BCI] Flickering launched');
 });
  
 
-function startTest() {
-  console.log('[StartTest] Initialised session');
-  
+function startTest() {  
   if (!socket) {
     alert('No connection with server');
     return;
@@ -30,13 +23,10 @@ function startTest() {
   }));
   
   document.getElementById('btn-test').disabled = true;
-  console.log('[StartTest] Disables start button once begins');
 }
  
 
-function stopTest() {
-  console.log('[StopTest] Session ended');
-  
+function stopTest() {  
   if (!socket) {
     alert('No connection with server');
     return;
@@ -52,7 +42,6 @@ function stopTest() {
   }));
   
   document.getElementById('btn-test').disabled = false;
-  console.log('[StopTest] Start button active again');
 }
  
 window.startTest = startTest;

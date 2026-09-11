@@ -56,6 +56,5 @@ function initFlicker() {
 }
 
 window.addEventListener('load', function() {
-  console.log('[Flicker] DOM loaded, starting flickering engine...');
   setTimeout(initFlicker, 100);
 });

@@ -1,6 +1,4 @@
 // ui.js 
-
-console.log('[UI] Initialising interface...');
  
 function setConnectionStatus(state) {
   var el = document.getElementById('status');
@@ -12,11 +10,9 @@ function setConnectionStatus(state) {
   if (state === 'connected') {
     el.textContent = '● Connecting to server';
     el.style.color = '#51cf66';
-    console.log('[UI] Status: Connected');
   } else {
     el.textContent = '● Disconnected - reattempting...';
     el.style.color = '#ff6b6b';
-    console.log('[UI] Status: Disconnected');
   }
 }
  
@@ -27,7 +23,6 @@ function clearCellSelection() {
     cell.classList.remove('error');
     cell.style.backgroundColor = '';
   });
-  console.log('[UI] Disabled cells selection');
 }
  
 function showMessage(text, type) {
@@ -50,10 +45,6 @@ function showMessage(text, type) {
   }
   
   console.log('[UI] Message:', text, '(' + type + ')');
-}
- 
-function updateSignalQuality(quality) {
-  console.log('[Signal Quality]', quality.toFixed(2), 'µV');
 }
  
 var countdownInterval = null;

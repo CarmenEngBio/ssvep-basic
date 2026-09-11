@@ -104,7 +104,7 @@ class EEGProcessor:
             Y = self.generate_references(freq, n_samples)
             
             try:
-                corr = self.calcular_rho_cca(X, Y)
+                corr = self.calculate_rho_cca(X, Y)
                 all_corrs[freq] = corr
                 print(f"[CCA] {freq}Hz: {corr:.4f}")
             except Exception as e:
@@ -121,7 +121,7 @@ class EEGProcessor:
         
         return best_freq, best_corr, all_corrs
     
-    def calcular_rho_cca(self, X, Y):
+    def calculate_rho_cca(self, X, Y):
         try:
             
             X = np.nan_to_num(X, nan=0.0, posinf=0.0, neginf=0.0)

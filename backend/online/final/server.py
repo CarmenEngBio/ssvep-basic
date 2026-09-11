@@ -121,7 +121,7 @@ async def run_blocks(ws, source):
                 "cell_id": cell_id, "emoji": emoji, "label": label,
                 "correlation": result["corr"], "correct": result["correct"],
                 "detected_freq": result["freq"], "all_corrs": result["all_corrs"],
-                "accuracy": round(acc_trial, 1), "status": status,
+                "accuracy": round(acc_trial, 1),
             }))
 
             bci_block.reset()
@@ -155,22 +155,6 @@ async def handler(ws, source):
                 if msg.get("type") == "start_session" and not recorder.is_recording:
                     block_task = asyncio.create_task(run_blocks(ws, source))
 
-                """
-                if msg.get("type") == "start_session" and not recorder.is_recording:
-                    # Vacía backlog de BrainFlow
-                    source.get_new_samples()
- 
-                    # Iniciar grabación
-                    fname = recorder.start("bci_exp2_online")
-                    await ws.send(json.dumps({
-                        "type": "session_started",
-                        "file": fname or "",
-                        "duration": TOTAL_SEC,
-                    }))
-                    
-                    # Ejecutar 4 bloques
-                    block_task = asyncio.create_task(run_blocks(ws, source))
-                """
  
             except (asyncio.TimeoutError, json.JSONDecodeError):
                 pass

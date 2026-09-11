@@ -92,7 +92,7 @@ class CytonEEG:
         print(f"✓ Cyton conectada en {SERIAL_PORT}")
  
     def get_window(self) -> np.ndarray:
-        #Obtiene ventana rodante de datos (NUESTUCTIVA).
+        #Obtiene ventana rodante de datos (DESTRUCTIVA).
         data = self.board.get_current_board_data(WINDOW)
         eeg = np.array([data[ch] for ch in self.eeg_chs])
  

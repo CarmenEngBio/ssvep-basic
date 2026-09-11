@@ -30,12 +30,12 @@ class CytonEEG:
 
     async def get_window(self) -> np.ndarray:
         data = self.board.get_current_board_data(WINDOW)
-        num_muestras = data.shape[1] 
-        if  num_muestras < WINDOW:
-            sec_faltan = (WINDOW - num_muestras)/FS 
-            await asyncio.sleep(sec_faltan + 0.1)
+        number_samples = data.shape[1] 
+        if  number_samples < WINDOW:
+            remain_sec = (WINDOW - number_samples)/FS 
+            await asyncio.sleep(remain_sec + 0.1)
             data = self.board.get_current_board_data(WINDOW)
-            num_muestras = data.shape[1]   
+            number_samples = data.shape[1]   
         eeg = np.array([data[ch] for ch in self.eeg_chs])
         ts_ch = BoardShim.get_timestamp_channel(BoardIds.CYTON_BOARD.value)
         time_stamps = data[ts_ch]

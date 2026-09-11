@@ -52,17 +52,7 @@ function connect() {
     }
   };
 }
- 
-/*
-function handleSessionStarted(msg) {
-  console.log('[Session Started] File:', msg.file);
-  showMessage('✓ Session started - Recording ...', 'success');
-  document.getElementById('rec-filename').textContent = 'Recording: ' + msg.file;
-  
-  document.getElementById('btn-test').style.display = 'none';
-  document.getElementById('btn-stop').style.display = 'block';
-}
-*/
+
  
 function handleBlockStarted(msg) {
   console.log('[Block Started] ID:', msg.cell_id, 'Label:', msg.label, 'Freq:', msg.freq);
@@ -84,23 +74,6 @@ function handleBlockStarted(msg) {
   var cell = document.getElementById('cell-' + msg.cell_id);
   if (cell) cell.style.backgroundColor = '#f0f0f0';
 }
-
-/*
-function handleBlockStarted(msg) {
-  console.log('[Block Started] ID:', msg.cell_id, 'Label:', msg.label, 'Freq:', msg.freq);
-  
-  var instruction = msg.emoji + ' Look at: ' + msg.label + ' (' + msg.freq + 'Hz)';
-  showMessage(instruction, 'info');
-  
-  startCountdown(msg.duration);
-  
-  clearCellSelection();
-  var cell = document.getElementById('cell-' + msg.cell_id);
-  if (cell) {
-    cell.style.backgroundColor = '#f0f0f0';  // Suave highlight
-  }
-}
-*/
  
 function handleBlockResult(msg) {
   console.log('[Block Result]', msg);
@@ -127,7 +100,6 @@ function handleBlockResult(msg) {
     //);
   }
   
-  console.log('[All correlations]', msg.all_corrs);
 }
  
 function handleSessionEnded(msg) {
@@ -143,7 +115,6 @@ function handleSessionEnded(msg) {
   document.getElementById('btn-test').style.display = 'block';
   document.getElementById('btn-stop').style.display = 'none';
   
-  console.log('[Results Summary]', msg.results);
 }
  
 function handleStatus(msg) {
