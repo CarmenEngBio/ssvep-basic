@@ -3,7 +3,7 @@
 ---
  
 This repository holds the **development history and previous versions** of the
-assistive SSVEP-based Brain–Computer Interface built for my Bachelor Thesis. 
+assistive SSVEP-based Brain-Computer Interface built for my Bachelor Thesis. 
 The clean, final system is delivered in a separate repository:
 **[mindaid-ssvep-bci](https://github.com/CarmenEngBio/mindaid-ssvep-bci)**. 
 This one (`ssvep-basic`) is kept so the earlier stages can be reviewed.
