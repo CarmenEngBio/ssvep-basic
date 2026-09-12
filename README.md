@@ -6,24 +6,25 @@ This repository holds the **development history and previous versions** of the
 assistive SSVEP-based Brain-Computer Interface built for my Bachelor Thesis. 
 The clean, final system is delivered in a separate repository:
 **[mindaid-ssvep-bci](https://github.com/CarmenEngBio/mindaid-ssvep-bci)**. 
-This one (`ssvep-basic`) is kept so the earlier stages can be reviewed.
+This one `ssvep-basic` is kept so the earlier stages can be reviewed.
  
-Four "vital" cells flicker at different frequencies on the screen; the user is
+Gathering four vital cells flickering at different frequencies on the screen, the user is
 aimed to gaze at one of them, the occipital-parietal EEG electrodes capture the
 raw entry signal with the used **OpenBCI Cyton** board and the **Ultracortex Mark IV**
 headset, and the targets are identified by **Canonical Correlation Analysis (CCA)**. 
 A small web User Interface (UI) runs the flickering stimulation and the real-time 
 feedback. 
 This final system is the one placed in the `online/` folders of `backend/` and 
-`frontend/`.
+`frontend/`, named as `final`.
  
 The repository is arranged as a **progression of experiments**, from the first
-single-cell test to the final real-time system. Earlier steps are kept under
+single-cell test to the final real-time system. Earlier deprecated steps are kept under
 `old implementations/`. The configurations presented in the Bachelor Thesis proposed
 `exp2_simultaneous` and `exp3_cross_symbols`, are found at the `offline/` folders 
-inside `backend/` and `frontend/`.
+inside `backend/` and `frontend/`. To check for additional information read the Bachelor
+Thesis documentation at the `docs/` folder.
  
-**Stack:** 
+**Stack Elements for Final Version** 
 - Python (BrainFlow, NumPy, SciPy, scikit-learn, websockets) 
 - web UI (HTML/CSS/JS over WebSocket)
 - EEG channels used: **P7, P8, O1, O2** (occipito-parietal) 
@@ -52,8 +53,8 @@ python server.py
  
 Recording session saved `.txt` files are written to `recordings/` generated folder. The online `final` system
 requires the OpenBCI Cyton hardware, but any experiment can also be run without it by switching the EEG source in 
-`eegsource.py` to synthetic, which generates fake EEG data so you can watch the whole pipeline, workflow and web UI in
-live.
+`eegsource.py` to synthetic which is commented and which generates fake EEG data so you can watch the whole pipeline, 
+workflow and web UI live.
 
 ---
  
@@ -88,7 +89,7 @@ ssvep-basic/
             └── icons/
 ```
  
-*offline* = only records raw EEG (`.txt`, OpenBCI-GUI compatible), and preprocessing, feature extraction and classification was analyzed later at Jupyter Notebooks
+*offline* = only records raw EEG (`.txt`, OpenBCI-GUI compatible), and preprocessing, feature extraction and classification was analyzed later at Jupyter Notebooks (see docs for further information)
  
 *online* = classifies in real time and provides feedback to the user
  
@@ -108,12 +109,13 @@ ssvep-basic/
    using an external timer to switch to the next cell from left to right.
 
 4. **exp3_cross_symbols** *(offline)* — Assesses the BCI performance when the target icons are arranged in a
-   cross-shaped layout.
+   cross-shaped layout. The recording procedure is similar to the previous experiment implementation.
 
-5. **icons** *(online)* — First real-time version with the assistive icons and live CCA. Precursor of `final`.
+5. **icons** *(online)* — First real-time version with the assistive icons and live CCA. It is the precursor of `final`.
 
-6. **final** *(online)* — Definitive system: preprocessing implementation (bandpass + notch + CAR), CCA
-   (harmonics [1, 2, 3]) over 40s trials, real-time feedback.
+6. **final** *(online)* — Definitive system: includes preprocessing implementation (bandpass + notch + CAR), CCA target
+   classification ( with the first three harmonics [1, 2, 3]) over 40 s trials gazing at each target-assigned cell and
+   gathering real-time feedback at the web UI.
 
 ---
  
