@@ -54,18 +54,14 @@ class CytonEEG:
 
 """
     def get_window(self) -> np.ndarray:
-        #Obtiene ventana rodante acumulando datos nuevos.
-        # Leer muestras nuevas
+
         new_eeg, _ = self.get_new_samples()
         
         if new_eeg.shape[1] == 0:
-            # No hay datos nuevos, devolver buffer anterior
             return self.last_window if self.last_window is not None else np.zeros((N_CHANNELS, WINDOW))
         
-        # Acumular
         self.buffer = np.hstack([self.buffer, new_eeg])
         
-        # Mantener solo últimas WINDOW muestras
         if self.buffer.shape[1] > WINDOW:
             self.buffer = self.buffer[:, -WINDOW:]
         
@@ -75,7 +71,6 @@ class CytonEEG:
 
 """
 class CytonEEG:
-    #Interfaz con placa Cyton OpenBCI
  
     def __init__(self):
         BoardShim.disable_board_logger()
@@ -89,10 +84,10 @@ class CytonEEG:
  
         self.board.prepare_session()
         self.board.start_stream()
-        print(f"✓ Cyton conectada en {SERIAL_PORT}")
+        print(f"✓ Cyton connected in {SERIAL_PORT}")
  
     def get_window(self) -> np.ndarray:
-        #Obtiene ventana rodante de datos (DESTRUCTIVA).
+
         data = self.board.get_current_board_data(WINDOW)
         eeg = np.array([data[ch] for ch in self.eeg_chs])
  
@@ -104,7 +99,7 @@ class CytonEEG:
     
  
     def get_new_samples(self):
-        #Lectura DESTRUCTIVA: vacía el buffer y devuelve muestras nuevas.
+
         data = self.board.get_board_data()
         if data.shape[1] == 0:
             return np.zeros((N_CHANNELS, 0)), np.zeros(0)
@@ -116,6 +111,6 @@ class CytonEEG:
     def stop(self) -> None:
         self.board.stop_stream()
         self.board.release_session()
-        print("✓ Cyton desconectada")
+        print("✓ Cyton disconnected")
 
     """

@@ -31,7 +31,7 @@ class EEGRecorder:
         self.current_filename = None
 
 
-    def start(self, label="sesion"):
+    def start(self, label="session"):
         
         # Opens a new file and starts writing the header as OpenBCI GUI style
         

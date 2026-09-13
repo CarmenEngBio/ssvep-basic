@@ -27,6 +27,6 @@ function connect() {
 
 function startTest() {
   if (socket && socket.readyState === WebSocket.OPEN) {
-    socket.send(JSON.stringify({ type: 'start_recording', label: 'test_celda1' }));
+    socket.send(JSON.stringify({ type: 'start_recording', label: 'session' }));
   }
 }

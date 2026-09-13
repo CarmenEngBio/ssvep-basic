@@ -31,7 +31,7 @@ class EEGRecorder:
         self.current_filename = None
 
 
-    def start(self, label="sesion"):
+    def start(self, label="session"):
         
         os.makedirs(self.output_dir, exist_ok=True)
         ts_str = datetime.now().strftime("%Y%m%d_%H%M%S")
